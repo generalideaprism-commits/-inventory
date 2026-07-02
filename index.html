@@ -66,7 +66,7 @@
   .titleline .cstyle{font-size:15px}
   .titleline .cname{font-size:15px;font-weight:600;color:var(--text)}
   .cblocks{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
-  .cblock{border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--panel2);min-width:185px}
+  .cblock{border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--panel2);min-width:225px}
   .cblock .cdot{font-size:12.5px;font-weight:700;margin-bottom:4px}
   .stbl{border-collapse:collapse;font-size:12px;width:100%}
   .stbl th{color:var(--muted);font-weight:600;text-align:right;padding:2px 9px;border-bottom:1px solid var(--line)}
@@ -75,7 +75,9 @@
   .stbl td:first-child{text-align:left;color:var(--muted);font-weight:600}
   .stbl .neg{color:var(--red);font-weight:700}
   .stbl .inq{color:var(--accent);font-weight:700}
+  .stbl td.iod{color:var(--accent);font-weight:600;font-size:11.5px}
   .stbl tfoot td{border-top:1px solid var(--line);font-weight:800}
+  .ven{font-size:11px;color:var(--accent);font-weight:600}
   .sched{margin-top:6px;font-size:11.5px;color:var(--amber);font-weight:600;line-height:1.4}
   .sched.io{color:var(--accent)}
   .etc{margin-top:8px;font-size:12px;color:var(--muted)}
@@ -150,13 +152,14 @@ const NEG = [
  {style:"WBE2L05512", name:"에어리 에센셜 하프 니트", year:2025, season:"여름", colors:[{code:"BL",cname:"BLUE",short:-1,sizes:"M -1"}]},
 ];
 
-let PROD={}, INC={}, INCSIZE={}, meta={state:"loading"}, curFilter="pending";
+let PROD={}, INC={}, INCSIZE={}, INCSIZED={}, meta={state:"loading"}, curFilter="pending";
 const num = n => (Number(n)||0).toLocaleString("ko-KR");
 const isDate = s => /^\d{4}-\d{2}-\d{2}$/.test(s||"");
 const pad = n => String(n).padStart(2,"0");
 const SIZE_ORDER = ["F","XS","S","M","L","XL","XXL"];
 function parseSizes(str){ const o={}; (str||"").split("·").forEach(t=>{ const m=t.trim().match(/^([A-Za-z]+)\s*(-?\d+)$/); if(m)o[m[1]]=Number(m[2]); }); return o; }
 function orderSizes(set){ const a=SIZE_ORDER.filter(z=>set.has(z)); [...set].forEach(z=>{ if(!SIZE_ORDER.includes(z))a.push(z); }); return a; }
+const mmdd=d=>{ const p=String(d).split("-"); return p.length===3 ? (+p[1])+"/"+(+p[2]) : d; };
 
 // ── 리오더 AM열 파싱: style -> {pending:[{color,text}], doneColors:Set} ──
 function buildProd(rows){
@@ -185,7 +188,7 @@ function tabVendor(t){ return String(t||"").replace(/^\s*\d{1,2}월\s*\d{1,2}일
 function tabDate(t){ const m=String(t||"").match(/(\d{1,2})월\s*(\d{1,2})일?/); return m?`2026-${pad(m[1])}-${pad(m[2])}`:""; }
 function pickDate(sh){ return isDate(sh.actualIn)?sh.actualIn:isDate(sh.arrivePlan)?sh.arrivePlan:isDate(sh.chulgoDate)?sh.chulgoDate:tabDate(sh.tab); }
 function buildIncoming(shipments){
-  INC={}; INCSIZE={}; const today=new Date(); today.setHours(0,0,0,0);
+  INC={}; INCSIZE={}; INCSIZED={}; const today=new Date(); today.setHours(0,0,0,0);
   const cut=new Date(today.getFullYear(), today.getMonth(), 1);
   (shipments||[]).forEach(sh=>{
     const d=pickDate(sh);
@@ -198,6 +201,7 @@ function buildIncoming(shipments){
       if(q<=0) return;
       const k=style+"|"+color; agg[k]=(agg[k]||0)+q;
       const sk=k+"|"+size; INCSIZE[sk]=(INCSIZE[sk]||0)+q;   // 컬러·사이즈별 입고수량 누적
+      (INCSIZED[sk]=INCSIZED[sk]||new Set()).add(date);      // 컬러·사이즈별 입고일(출고장)
     });
     Object.keys(agg).forEach(k=>{ if(agg[k]>0)(INC[k]=INC[k]||[]).push({date,vendor,qty:agg[k],arrived}); });
   });
@@ -250,26 +254,27 @@ function render(filter){
     // 컬러별 [사이즈 | 마이너스 | 입고] + 입고예정 일정
     const blocks=s.colors.map(c=>{
       const neg=parseSizes(c.sizes), key=s.style+"|"+c.code;
+      const io=incFor(s.style,c.code);   // 출고장(입고현황) 실제 도착
+      const vendors=[...new Set(io.map(x=>x.vendor).filter(Boolean))];
       const szset=new Set(Object.keys(neg));
       Object.keys(INCSIZE).forEach(k=>{ if(k.startsWith(key+"|")) szset.add(k.slice(key.length+1)); });
       let negT=0, inT=0;
       const body=orderSizes(szset).map(z=>{
         const nv=neg[z], iv=INCSIZE[key+"|"+z];
+        const dts=INCSIZED[key+"|"+z]?[...INCSIZED[key+"|"+z]].map(mmdd).join(","):"";
         if(nv!=null)negT+=nv; if(iv!=null)inT+=iv;
-        return `<tr><td>${z}</td><td class="neg">${nv!=null?num(nv):'-'}</td><td class="inq">${iv!=null?'+'+num(iv):'-'}</td></tr>`;
+        return `<tr><td>${z}</td><td class="neg">${nv!=null?num(nv):'-'}</td><td class="inq">${iv!=null?'+'+num(iv):'-'}</td><td class="iod">${dts||'-'}</td></tr>`;
       }).join("");
-      const io=incFor(s.style,c.code);   // 출고장(입고현황) 실제 도착
+      // 출고장에 없고 생산스케줄에만 입고예정 → 해당 컬러 하단 표기
       let schedHtml="";
-      if(io.length){
-        schedHtml=`<div class="sched io">🚚 입고일정: ${io.map(x=>`${x.date}${x.vendor?' '+x.vendor:''} +${num(x.qty)}`).join(" · ")}</div>`;
-      } else {
+      if(!io.length){
         const sched=pendByColor[c.code]||[];
         if(sched.length) schedHtml=`<div class="sched">🔄 입고예정(생산): ${sched.join(" · ")}</div>`;
       }
-      return `<div class="cblock"><div class="cdot">${c.code} · ${c.cname}</div>
-        <table class="stbl"><thead><tr><th>사이즈</th><th>마이너스</th><th>입고</th></tr></thead>
+      return `<div class="cblock"><div class="cdot">${c.code} · ${c.cname}${vendors.length?` <span class="ven">🚚 ${vendors.join("/")}</span>`:""}</div>
+        <table class="stbl"><thead><tr><th>사이즈</th><th>마이너스</th><th>입고</th><th>입고일정</th></tr></thead>
         <tbody>${body}</tbody>
-        <tfoot><tr><td>계</td><td class="neg">${num(negT)}</td><td class="inq">${inT?'+'+num(inT):'-'}</td></tr></tfoot></table>${schedHtml}</div>`;
+        <tfoot><tr><td>계</td><td class="neg">${num(negT)}</td><td class="inq">${inT?'+'+num(inT):'-'}</td><td></td></tr></tfoot></table>${schedHtml}</div>`;
     }).join("");
     const etc=Object.keys(pendByColor).filter(col=>!negColors.has(col) && !(INC[s.style+"|"+col]||[]).length).map(col=>`${col} ${pendByColor[col].join(" · ")}`);
     const etcHtml=etc.length?`<div class="etc">🔄 기타 컬러 리오더 — ${etc.join(" / ")}</div>`:"";
