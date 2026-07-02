@@ -13,18 +13,25 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--text);font-family:"Pretendard","Malgun Gothic",-apple-system,system-ui,sans-serif;line-height:1.5;padding:24px;max-width:1200px;margin:0 auto}
-  header{margin-bottom:20px}
+  header{margin-bottom:16px}
   h1{font-size:22px;font-weight:700;letter-spacing:-.02em}
   .sub{color:var(--muted);font-size:13px;margin-top:6px}
-  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:20px 0}
+  .livebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:14px 0;font-size:13px}
+  .livedot{width:9px;height:9px;border-radius:50%;background:var(--gray);flex:none}
+  .livedot.ok{background:var(--green);box-shadow:0 0 8px var(--green)}
+  .livedot.err{background:var(--red)}
+  .livebar .msg{color:var(--muted)} .livebar .msg b{color:var(--text)}
+  .livebar button{margin-left:auto;background:var(--accent);color:#fff;border:0;border-radius:8px;padding:7px 14px;font-size:13px;cursor:pointer}
+  .livebar button:disabled{opacity:.5;cursor:default}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
   .kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
   .kpi .n{font-size:26px;font-weight:700}
   .kpi .l{font-size:12px;color:var(--muted);margin-top:4px}
-  .kpi.red .n{color:var(--red)} .kpi.green .n{color:var(--green)} .kpi.amber .n{color:var(--amber)} .kpi.gray .n{color:var(--gray)}
+  .kpi.red .n{color:var(--red)} .kpi.blue .n{color:var(--accent)} .kpi.green .n{color:var(--green)} .kpi.gray .n{color:var(--gray)}
   .note{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:12px 14px;font-size:13px;color:var(--muted);margin-bottom:18px}
   .note b{color:var(--text)}
   .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-  .filters button{background:var(--panel);color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:7px 14px;font-size:13px;cursor:pointer;transition:.15s}
+  .filters button{background:var(--panel);color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:7px 14px;font-size:13px;cursor:pointer}
   .filters button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px}
   .chead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
@@ -32,160 +39,208 @@
   .cname{font-size:16px;font-weight:600;margin-top:2px}
   .cmeta{font-size:12px;color:var(--muted);margin-top:2px}
   .badge{font-size:12px;font-weight:600;padding:5px 11px;border-radius:20px;white-space:nowrap}
+  .b-pending{background:rgba(240,160,32,.16);color:var(--amber)}
   .b-done{background:rgba(47,191,113,.15);color:var(--green)}
-  .b-late{background:rgba(255,90,106,.15);color:var(--red)}
   .b-none{background:rgba(90,101,128,.18);color:var(--gray)}
-  .crow{display:flex;flex-wrap:wrap;gap:16px;align-items:center;padding-top:14px;margin-top:12px;border-top:1px solid var(--line)}
-  .color{min-width:130px}
-  .cdot{display:inline-block;font-size:13px;font-weight:600}
+  .reorder{margin:12px 0 4px;padding:10px 12px;background:rgba(240,160,32,.07);border:1px solid rgba(240,160,32,.3);border-radius:8px}
+  .reorder .rlbl{font-size:11px;color:var(--amber);font-weight:700;margin-bottom:6px}
+  .rchips{display:flex;gap:6px;flex-wrap:wrap}
+  .rchip{background:var(--chip);border:1px solid rgba(240,160,32,.4);border-radius:7px;padding:5px 10px;font-size:12px}
+  .rchip b{color:var(--amber)}
+  .rchip .c{color:var(--text);font-weight:700;margin-right:6px}
+  .crow{display:flex;flex-wrap:wrap;gap:14px 20px;align-items:flex-start;padding-top:12px;margin-top:10px;border-top:1px solid var(--line)}
+  .color{min-width:120px}
+  .cdot{font-size:13px;font-weight:600}
   .short{font-size:22px;font-weight:700;color:var(--red)}
   .sizes{font-size:12px;color:var(--muted);margin-top:2px}
   .arrivals{flex:1;min-width:220px}
-  .albl{font-size:11px;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
+  .albl{font-size:11px;color:var(--muted);margin-bottom:5px}
   .chips{display:flex;gap:6px;flex-wrap:wrap}
-  .chip{background:var(--chip);border:1px solid var(--line);border-radius:7px;padding:5px 9px;font-size:12px}
+  .chip{background:var(--chip);border:1px solid var(--line);border-radius:7px;padding:5px 9px;font-size:12px;white-space:nowrap}
   .chip .d{color:var(--muted);font-size:11px}
-  .chip .q{font-weight:600;margin-left:6px}
-  .chip.late{border-color:var(--red);color:var(--red)}
+  .chip .q{font-weight:700;margin-left:6px}
+  .chip.arr{border-color:var(--accent)} .chip.arr .q{color:#a9c7ff}
+  .chip.plan{border-color:var(--amber)} .chip.plan .q{color:var(--amber)}
   .chip.none{color:var(--gray)}
-  .recv{font-size:12px;color:var(--muted);margin-top:6px}
-  .recv b{color:var(--text)}
-  footer{color:var(--muted);font-size:12px;margin-top:24px;text-align:center}
+  footer{color:var(--muted);font-size:12px;margin-top:24px;text-align:center;line-height:1.7}
 </style>
 </head>
 <body>
 <header>
   <h1>📦 마이너스 재고 · 입고 매칭 대시보드</h1>
-  <div class="sub">GENERAL IDEA · 재고(가용합계 T열) &lt; 0 스타일 ↔ 26SS 생산스케줄 입고일 매칭 · 기준일 2026-07-02</div>
+  <div class="sub" id="sub">GENERAL IDEA · 마이너스 재고 ↔ 리오더 입고예정(생산시트 AM열) 실시간 매칭</div>
 </header>
+
+<div class="livebar">
+  <span class="livedot" id="livedot"></span>
+  <span class="msg" id="livemsg">실시간 데이터 동기화 중…</span>
+  <button id="refresh" onclick="loadLive()">🔄 새로고침</button>
+</div>
 
 <div class="kpis" id="kpis"></div>
 
 <div class="note">
-  <b>읽는 법</b> — 마이너스 재고 스타일을 생산스케줄의 <b>입고일·입고수량</b>과 매칭했습니다.
-  26SS 생산품(GF2*)만 입고일정이 잡혀 있으며, 대부분 이미 <b>입고완료</b>(과거)인데도 재고가 마이너스라는 것은
-  <b>입고분이 이미 판매·할당으로 소진</b>되어 추가 부족이 발생했다는 의미입니다.
-  <b style="color:var(--red)">입고지연</b>은 발주는 됐으나 미입고 상태이고, 구형 시즌(24/25)은 <b>입고 계획이 없습니다</b>.
+  <b>읽는 법</b> — 생산시트 <b>리오더 탭 AM열</b>이 <b style="color:var(--green)">입고완료</b>인 스타일은 제외하고,
+  <b style="color:var(--amber)">🔄 입고예정</b>(예: "7/8 입고예정", "잔량 7/3 입고예정")이 남은 마이너스 스타일만 보여줍니다.
+  각 컬러의 빨간 숫자는 <b>부족(가용합계)</b>, 아래 <b style="color:var(--accent)">🚚 실물도착</b>은 입고현황 시트의 실제 도착분(전산 미반영)입니다.
 </div>
 
 <div class="filters" id="filters">
-  <button data-f="all" class="active">전체</button>
-  <button data-f="late">입고지연 (발주·미입고)</button>
-  <button data-f="done">입고완료</button>
-  <button data-f="none">입고계획 없음</button>
+  <button data-f="pending" class="active">🔄 입고예정 남음</button>
+  <button data-f="all">전체</button>
+  <button data-f="done">✅ 입고완료(제외분)</button>
+  <button data-f="noreorder">리오더 없음</button>
 </div>
 
 <div id="list"></div>
 
-<footer>데이터: 「마이너스재고」 시트 T열 · 「생산스케줄 26SS」 파샬입고계획 · 자동 매칭</footer>
+<footer>
+  재고: 「마이너스재고」 T열 · 리오더 입고예정: 「생산스케줄」 리오더탭 AM열 · 실물도착: 「입고현황」 시트 (모두 실시간)<br>
+  <span id="footmeta"></span>
+</footer>
 
 <script>
-const DATA = [
- {style:"GF2LTS527", name:"드레이프 셔링 반팔 티셔츠", year:2026, season:"여름", status:"late",
-  colors:[
-   {code:"CH", cname:"CHARCOAL", short:-347, sizes:"L -112 · S -112 · M -90 · XL -33", order:600, recv:0, target:"2026-04-15", arrivals:[]},
-  ]},
- {style:"GF2LKC541", name:"[온도컷] 쿨 에센셜 하프 가디건", year:2026, season:"여름", status:"done",
-  colors:[
-   {code:"BK", cname:"BLACK", short:-253, sizes:"S -189 · L -34 · XL -30", order:3125, recv:3034,
-    arrivals:[{d:"2026-04-29",q:1086},{d:"2026-05-08",q:69},{d:"2026-05-08",q:437},{d:"2026-05-13",q:946},{d:"2026-05-20",q:496}]},
-   {code:"SM", cname:"SAGE MINT", short:-225, sizes:"M -143 · S -65 · L -17", order:1875, recv:1851,
-    arrivals:[{d:"2026-05-08",q:443},{d:"2026-05-08",q:326},{d:"2026-05-13",q:832},{d:"2026-05-20",q:250}]},
-  ]},
- {style:"GF2LSH522", name:"레이스 케미솔 탑", year:2026, season:"여름", status:"done",
-  colors:[
-   {code:"MI", cname:"MINT", short:-77, sizes:"S -48 · M -20 · L -5 · XL -4", order:450, recv:444, arrivals:[{d:"2026-05-15",q:444}]},
-   {code:"WH", cname:"WHITE", short:-32, sizes:"S -31 · M -1", order:550, recv:514, arrivals:[{d:"2026-05-15",q:514}]},
-   {code:"BK", cname:"BLACK", short:-24, sizes:"L -12 · S -10 · M -2", order:500, recv:507, arrivals:[{d:"2026-05-15",q:507}]},
-  ]},
- {style:"GF2LSH521", name:"레이스 라운드 카라 블라우스", year:2026, season:"여름", status:"done",
-  colors:[
-   {code:"NA", cname:"NAVY", short:-58, sizes:"L -33 · S -25", order:600, recv:607, arrivals:[{d:"2026-05-19",q:473},{d:"2026-05-26",q:134}]},
-  ]},
- {style:"GF2UPT017", name:"스티치 포인트 스트링 팬츠", year:2026, season:"여름", status:"done",
-  colors:[
-   {code:"BR", cname:"BROWN", short:-1, sizes:"S -1", order:575, recv:585, arrivals:[{d:"2026-05-12",q:61},{d:"2026-05-15",q:524}]},
-  ]},
- {style:"WBE2L04540", name:"패커블 시어 롱 슬리브 가디건", year:2025, season:"여름", status:"none",
-  colors:[{code:"MG", cname:"MELANGE GRAY", short:-271, sizes:"S -83 · L -81 · XL -78 · M -29"}]},
- {style:"WBD2L05528", name:"텐셀 케이블 하프 니트", year:2024, season:"여름", status:"none",
-  colors:[{code:"BK", cname:"BLACK", short:-5, sizes:"S -2 · M -2 · XL -1"},{code:"IV", cname:"IVORY", short:-1, sizes:"S -1"}]},
- {style:"WBD2L01518", name:"GNRL 언밸런스 실켓 스판 반팔티", year:2024, season:"여름", status:"none",
-  colors:[{code:"BK", cname:"BLACK", short:-3, sizes:"M -2 · L -1"}]},
- {style:"QBD1L95503", name:"에센셜 데일리 하이 삭스", year:2024, season:"봄", status:"none",
-  colors:[{code:"MT", cname:"MULTI", short:-2, sizes:"F -2"}]},
- {style:"WBD2L04527", name:"텐셀 에센셜 하프 가디건", year:2024, season:"여름", status:"none",
-  colors:[{code:"PI", cname:"PINK", short:-2, sizes:"M -2"}]},
- {style:"WBE1L94513", name:"리얼 레더 미니멀 웨스턴 벨트", year:2025, season:"봄", status:"none",
-  colors:[{code:"BK", cname:"BLACK", short:-2, sizes:"F -2"}]},
- {style:"SBE2U01007", name:"NB 데일리 코튼 반팔티", year:2025, season:"여름", status:"none",
-  colors:[{code:"WH", cname:"WHITE", short:-1, sizes:"L -1"}]},
- {style:"SBD1U52040", name:"에센셜 코지 스웨트 조거 팬츠", year:2024, season:"봄", status:"none",
-  colors:[{code:"MG", cname:"MELANGE GRAY", short:-1, sizes:"S -1"}]},
- {style:"WBD3L91501", name:"GNRL 베이직 로고 볼캡", year:2024, season:"가을", status:"none",
-  colors:[{code:"KH", cname:"KHAKI", short:-1, sizes:"F -1"}]},
- {style:"WBD3L04507", name:"GNRL 에센셜 후드 집업", year:2024, season:"가을", status:"none",
-  colors:[{code:"BE", cname:"BEIGE", short:-1, sizes:"S -1"}]},
- {style:"WBE2L01531", name:"NA 아세테이트 크루넥 셔링 반팔티", year:2025, season:"여름", status:"none",
-  colors:[{code:"BK", cname:"BLACK", short:-1, sizes:"L -1"}]},
- {style:"WBE2L01513", name:"뉴베이직 슬림 브이넥 반팔티", year:2025, season:"여름", status:"none",
-  colors:[{code:"BK", cname:"BLACK", short:-1, sizes:"M -1"}]},
- {style:"SBE2U91006", name:"5PANEL 레터링 트러커 캡", year:2025, season:"여름", status:"none",
-  colors:[{code:"BU", cname:"BURGUNDY", short:-1, sizes:"F -1"}]},
- {style:"WBE2L05512", name:"에어리 에센셜 하프 니트", year:2025, season:"여름", status:"none",
-  colors:[{code:"BL", cname:"BLUE", short:-1, sizes:"M -1"}]},
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbzGRAhjdY7ba3iYykERsJB_ZxRn7_p319wKjSvxFpK4qKY2JZnROCrzsaflU4_dYMrKWQ/exec";
+
+// 마이너스 재고 (스냅샷)
+const NEG = [
+ {style:"GF2LKC541", name:"[온도컷] 쿨 에센셜 하프 가디건", year:2026, season:"여름",
+  colors:[{code:"BK",cname:"BLACK",short:-253,sizes:"S -189 · L -34 · XL -30"},{code:"SM",cname:"SAGE MINT",short:-225,sizes:"M -143 · S -65 · L -17"}]},
+ {style:"GF2LTS527", name:"드레이프 셔링 반팔 티셔츠", year:2026, season:"여름",
+  colors:[{code:"CH",cname:"CHARCOAL",short:-347,sizes:"L -112 · S -112 · M -90 · XL -33"}]},
+ {style:"GF2LSH522", name:"레이스 케미솔 탑", year:2026, season:"여름",
+  colors:[{code:"MI",cname:"MINT",short:-77,sizes:"S -48 · M -20 · L -5 · XL -4"},{code:"WH",cname:"WHITE",short:-32,sizes:"S -31 · M -1"},{code:"BK",cname:"BLACK",short:-24,sizes:"L -12 · S -10 · M -2"}]},
+ {style:"GF2LSH521", name:"레이스 라운드 카라 블라우스", year:2026, season:"여름",
+  colors:[{code:"NA",cname:"NAVY",short:-58,sizes:"L -33 · S -25"}]},
+ {style:"GF2UPT017", name:"스티치 포인트 스트링 팬츠", year:2026, season:"여름",
+  colors:[{code:"BR",cname:"BROWN",short:-1,sizes:"S -1"}]},
+ {style:"WBE2L04540", name:"패커블 시어 롱 슬리브 가디건", year:2025, season:"여름",
+  colors:[{code:"MG",cname:"MELANGE GRAY",short:-271,sizes:"S -83 · L -81 · XL -78 · M -29"}]},
+ {style:"WBD2L05528", name:"텐셀 케이블 하프 니트", year:2024, season:"여름",
+  colors:[{code:"BK",cname:"BLACK",short:-5,sizes:"S -2 · M -2 · XL -1"},{code:"IV",cname:"IVORY",short:-1,sizes:"S -1"}]},
+ {style:"WBD2L01518", name:"GNRL 언밸런스 실켓 스판 반팔티", year:2024, season:"여름",
+  colors:[{code:"BK",cname:"BLACK",short:-3,sizes:"M -2 · L -1"}]},
+ {style:"QBD1L95503", name:"에센셜 데일리 하이 삭스", year:2024, season:"봄", colors:[{code:"MT",cname:"MULTI",short:-2,sizes:"F -2"}]},
+ {style:"WBD2L04527", name:"텐셀 에센셜 하프 가디건", year:2024, season:"여름", colors:[{code:"PI",cname:"PINK",short:-2,sizes:"M -2"}]},
+ {style:"WBE1L94513", name:"리얼 레더 미니멀 웨스턴 벨트", year:2025, season:"봄", colors:[{code:"BK",cname:"BLACK",short:-2,sizes:"F -2"}]},
+ {style:"SBE2U01007", name:"NB 데일리 코튼 반팔티", year:2025, season:"여름", colors:[{code:"WH",cname:"WHITE",short:-1,sizes:"L -1"}]},
+ {style:"SBD1U52040", name:"에센셜 코지 스웨트 조거 팬츠", year:2024, season:"봄", colors:[{code:"MG",cname:"MELANGE GRAY",short:-1,sizes:"S -1"}]},
+ {style:"WBD3L91501", name:"GNRL 베이직 로고 볼캡", year:2024, season:"가을", colors:[{code:"KH",cname:"KHAKI",short:-1,sizes:"F -1"}]},
+ {style:"WBD3L04507", name:"GNRL 에센셜 후드 집업", year:2024, season:"가을", colors:[{code:"BE",cname:"BEIGE",short:-1,sizes:"S -1"}]},
+ {style:"WBE2L01531", name:"NA 아세테이트 크루넥 셔링 반팔티", year:2025, season:"여름", colors:[{code:"BK",cname:"BLACK",short:-1,sizes:"L -1"}]},
+ {style:"WBE2L01513", name:"뉴베이직 슬림 브이넥 반팔티", year:2025, season:"여름", colors:[{code:"BK",cname:"BLACK",short:-1,sizes:"M -1"}]},
+ {style:"SBE2U91006", name:"5PANEL 레터링 트러커 캡", year:2025, season:"여름", colors:[{code:"BU",cname:"BURGUNDY",short:-1,sizes:"F -1"}]},
+ {style:"WBE2L05512", name:"에어리 에센셜 하프 니트", year:2025, season:"여름", colors:[{code:"BL",cname:"BLUE",short:-1,sizes:"M -1"}]},
 ];
 
-const badgeMap = {done:["입고완료","b-done"], late:["입고지연 · 미입고","b-late"], none:["입고계획 없음","b-none"]};
+let PROD={}, INC={}, meta={state:"loading"}, curFilter="pending";
+const num = n => (Number(n)||0).toLocaleString("ko-KR");
+const isDate = s => /^\d{4}-\d{2}-\d{2}$/.test(s||"");
+const pad = n => String(n).padStart(2,"0");
 
-function num(n){return n.toLocaleString("ko-KR");}
+// ── 리오더 AM열 파싱: style -> {pending:[{color,text}], doneColors:Set} ──
+function buildProd(rows){
+  PROD={};
+  (rows||[]).forEach(p=>{
+    const st=(p.style||"").trim(); if(!st) return;
+    const am=(p.am||"").trim(), color=(p.color||"").trim();
+    if(!PROD[st]) PROD[st]={pending:[], done:new Set(), seen:new Set()};
+    if(am==="입고완료"){ PROD[st].done.add(color); }
+    else if(am!==""){
+      const key=color+"|"+am;
+      if(!PROD[st].seen.has(key)){ PROD[st].seen.add(key); PROD[st].pending.push({color,text:am}); }
+    }
+  });
+}
+function statusOf(style){
+  const p=PROD[style];
+  if(p && p.pending.length) return "pending";
+  if(p && p.done.size) return "done";
+  return "noreorder";
+}
+
+// ── 입고현황(실물도착, 이번 달·전산 미반영) : style|color -> [{date,vendor,qty,arrived}] ──
+function tabVendor(t){ return String(t||"").replace(/^\s*\d{1,2}월\s*\d{1,2}일?\s*/,"").trim()||t; }
+function tabDate(t){ const m=String(t||"").match(/(\d{1,2})월\s*(\d{1,2})일?/); return m?`2026-${pad(m[1])}-${pad(m[2])}`:""; }
+function pickDate(sh){ return isDate(sh.actualIn)?sh.actualIn:isDate(sh.arrivePlan)?sh.arrivePlan:isDate(sh.chulgoDate)?sh.chulgoDate:tabDate(sh.tab); }
+function buildIncoming(shipments){
+  INC={}; const today=new Date(); today.setHours(0,0,0,0);
+  const cut=new Date(today.getFullYear(), today.getMonth(), 1);
+  (shipments||[]).forEach(sh=>{
+    const d=pickDate(sh);
+    if(isDate(d) && new Date(d)<cut) return;                       // 지난달 이전 완료
+    if(isDate(sh.reflectDate) && new Date(sh.reflectDate)<=today) return; // 전산반영 완료
+    const date=d, vendor=tabVendor(sh.tab), arrived=isDate(sh.actualIn);
+    const agg={};
+    (sh.items||[]).forEach(it=>{ const k=(it.style||"").trim()+"|"+(it.color||"").trim(); agg[k]=(agg[k]||0)+(Number(it.qty)||0); });
+    Object.keys(agg).forEach(k=>{ if(agg[k]>0)(INC[k]=INC[k]||[]).push({date,vendor,qty:agg[k],arrived}); });
+  });
+}
+const incFor=(st,c)=> (INC[st+"|"+c]||[]).slice().sort((a,b)=>a.date<b.date?-1:1);
+
+async function loadLive(){
+  const btn=document.getElementById("refresh"); btn.disabled=true;
+  meta={state:"loading"}; renderLiveBar();
+  try{
+    const j=await (await fetch(SHEET_URL,{cache:"no-store"})).json();
+    buildProd(j.production); buildIncoming(j.shipments);
+    meta={state:"ok", updated:j.updated, ships:(j.shipments||[]).length, prods:(j.production||[]).length};
+  }catch(e){ meta={state:"err", err:String(e)}; }
+  btn.disabled=false; renderLiveBar(); renderKpis(); render(curFilter);
+}
+function renderLiveBar(){
+  const dot=document.getElementById("livedot"), msg=document.getElementById("livemsg"), fm=document.getElementById("footmeta");
+  if(meta.state==="loading"){ dot.className="livedot"; msg.textContent="실시간 데이터 동기화 중…"; return; }
+  if(meta.state==="err"){ dot.className="livedot err"; msg.innerHTML="실시간 연동 실패 — <b>새로고침</b>을 눌러 다시 시도하세요."; fm.textContent="실시간 연동 실패"; return; }
+  dot.className="livedot ok";
+  const t=new Date(meta.updated), ts=`${t.getFullYear()}-${pad(t.getMonth()+1)}-${pad(t.getDate())} ${pad(t.getHours())}:${pad(t.getMinutes())}`;
+  msg.innerHTML=`실시간 연동됨 · 리오더 <b>${num(meta.prods)}행</b> · 입고현황 <b>${meta.ships}건</b> · 갱신 ${ts}`;
+  fm.textContent=`마지막 갱신 ${ts} · AM열 '입고완료' 자동 제외`;
+}
 
 function renderKpis(){
-  let rows=0, qty=0, done=0, late=0, none=0, styles=DATA.length;
-  DATA.forEach(s=>s.colors.forEach(c=>{rows++; qty+=c.short;
-    if(s.status==="done")done++; else if(s.status==="late")late++; else none++;}));
+  let qty=0; NEG.forEach(s=>s.colors.forEach(c=>qty+=c.short));
+  let pend=0, done=0;
+  NEG.forEach(s=>{ const st=statusOf(s.style); if(st==="pending")pend++; else if(st==="done")done++; });
   const k=[
-    {n:styles,l:"마이너스 스타일 수",cls:"red"},
-    {n:num(qty),l:"총 마이너스 수량(가용합계)",cls:"red"},
-    {n:late,l:"입고지연(발주·미입고) 컬러",cls:"amber"},
-    {n:done,l:"입고완료 매칭 컬러",cls:"green"},
-    {n:none,l:"입고계획 없음 컬러",cls:"gray"},
+    {n:NEG.length,l:"마이너스 스타일 수",cls:"red"},
+    {n:num(qty),l:"총 마이너스 수량",cls:"red"},
+    {n:pend,l:"🔄 입고예정 남은 스타일",cls:"blue"},
+    {n:done,l:"✅ 입고완료(제외) 스타일",cls:"green"},
   ];
-  document.getElementById("kpis").innerHTML=k.map(x=>
-    `<div class="kpi ${x.cls}"><div class="n">${x.n}</div><div class="l">${x.l}</div></div>`).join("");
+  document.getElementById("kpis").innerHTML=k.map(x=>`<div class="kpi ${x.cls}"><div class="n">${x.n}</div><div class="l">${x.l}</div></div>`).join("");
 }
 
 function render(filter){
+  curFilter=filter;
   const list=document.getElementById("list");
-  const items=DATA.filter(s=>filter==="all"||s.status===filter);
+  const items=NEG.filter(s=>{ const st=statusOf(s.style); return filter==="all"?true:st===filter; });
+  const badge={pending:["🔄 입고예정","b-pending"],done:["✅ 입고완료","b-done"],noreorder:["리오더 없음","b-none"]};
   list.innerHTML=items.map(s=>{
-    const [btxt,bcls]=badgeMap[s.status];
+    const st=statusOf(s.style), [btxt,bcls]=badge[st];
+    const p=PROD[s.style];
+    // 리오더 입고예정 블록
+    let reorder="";
+    if(p && p.pending.length){
+      reorder=`<div class="reorder"><div class="rlbl">🔄 리오더 입고예정 (생산시트 AM열)</div>
+        <div class="rchips">${p.pending.map(x=>`<span class="rchip"><span class="c">${x.color||"-"}</span><b>${x.text}</b></span>`).join("")}</div></div>`;
+    }
+    // 컬러별 부족 + 실물도착
     const rows=s.colors.map(c=>{
-      let arr;
-      if(s.status==="none"){
-        arr=`<div class="chips"><span class="chip none">입고 계획 없음 (구형 시즌)</span></div>`;
-      }else if(s.status==="late"){
-        arr=`<div class="chips"><span class="chip late">목표 ${c.target} · 미입고</span></div>
-             <div class="recv">발주 <b>${num(c.order)}</b> · 입고 <b style="color:var(--red)">0</b></div>`;
-      }else{
-        arr=`<div class="chips">${c.arrivals.map(a=>
-          `<span class="chip"><span class="d">${a.d}</span><span class="q">+${num(a.q)}</span></span>`).join("")}</div>
-          <div class="recv">발주 <b>${num(c.order)}</b> · 총입고 <b style="color:var(--green)">${num(c.recv)}</b></div>`;
-      }
+      const inc=incFor(s.style,c.code);
+      const incHtml = inc.length
+        ? `<div class="chips">${inc.map(x=>`<span class="chip ${x.arrived?'arr':'plan'}"><span class="d">${x.date}${x.vendor?' · '+x.vendor:''}</span><span class="q">+${num(x.qty)}</span></span>`).join("")}</div>`
+        : `<div class="chips"><span class="chip none">-</span></div>`;
       return `<div class="crow">
         <div class="color"><span class="cdot">${c.code} · ${c.cname}</span>
-          <div class="short">${num(c.short)}</div>
-          <div class="sizes">${c.sizes}</div></div>
-        <div class="arrivals"><div class="albl">입고 일정</div>${arr}</div>
+          <div class="short">${num(c.short)}</div><div class="sizes">${c.sizes}</div></div>
+        <div class="arrivals"><div class="albl">🚚 실물도착 (입고현황·미반영)</div>${incHtml}</div>
       </div>`;
     }).join("");
     return `<div class="card">
-      <div class="chead">
-        <div><div class="cstyle">${s.style}</div>
-          <div class="cname">${s.name}</div>
-          <div class="cmeta">${s.year} ${s.season}</div></div>
-        <span class="badge ${bcls}">${btxt}</span>
-      </div>${rows}</div>`;
+      <div class="chead"><div><div class="cstyle">${s.style}</div><div class="cname">${s.name}</div><div class="cmeta">${s.year} ${s.season}</div></div>
+        <span class="badge ${bcls}">${btxt}</span></div>
+      ${reorder}${rows}</div>`;
   }).join("");
   if(!items.length) list.innerHTML=`<div class="note">해당 항목이 없습니다.</div>`;
 }
@@ -194,7 +249,10 @@ document.querySelectorAll("#filters button").forEach(b=>{
   b.onclick=()=>{document.querySelectorAll("#filters button").forEach(x=>x.classList.remove("active"));
     b.classList.add("active"); render(b.dataset.f);};
 });
-renderKpis(); render("all");
+(function(){ const t=new Date();
+  document.getElementById("sub").innerHTML=`GENERAL IDEA · 마이너스 재고 ↔ 리오더 입고예정(생산시트 AM열) 실시간 매칭 · 기준일 ${t.getFullYear()}-${pad(t.getMonth()+1)}-${pad(t.getDate())}`;
+})();
+renderKpis(); render("pending"); loadLive();
 </script>
 </body>
 </html>
