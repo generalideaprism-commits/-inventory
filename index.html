@@ -251,6 +251,14 @@ function render(filter){
     const p=PROD[s.style]||{pending:[]};
     const pendByColor={}; (p.pending||[]).forEach(x=>{ (pendByColor[x.color]=pendByColor[x.color]||[]).push(x.text); });
     const negColors=new Set(s.colors.map(c=>c.code));
+    // 리오더 입고예정 중 출고장 날짜와 겹치지 않는(=아직 안 온) 항목만 남김
+    const uncovered=(color)=>{
+      const ioDates=new Set(incFor(s.style,color).map(x=>mmdd(x.date)));
+      return (pendByColor[color]||[]).filter(t=>{
+        for(const dm of ioDates){ if(new RegExp("(^|\\D)"+dm.replace("/","\\/")+"(\\D|$)").test(t)) return false; }
+        return true;
+      });
+    };
     // 컬러별 [사이즈 | 마이너스 | 입고] + 입고예정 일정
     const blocks=s.colors.map(c=>{
       const neg=parseSizes(c.sizes), key=s.style+"|"+c.code;
@@ -265,18 +273,15 @@ function render(filter){
         if(nv!=null)negT+=nv; if(iv!=null)inT+=iv;
         return `<tr><td>${z}</td><td class="neg">${nv!=null?num(nv):'-'}</td><td class="inq">${iv!=null?'+'+num(iv):'-'}</td><td class="iod">${dts||'-'}</td></tr>`;
       }).join("");
-      // 출고장에 없고 생산스케줄에만 입고예정 → 해당 컬러 하단 표기
-      let schedHtml="";
-      if(!io.length){
-        const sched=pendByColor[c.code]||[];
-        if(sched.length) schedHtml=`<div class="sched">🔄 입고예정(생산): ${sched.join(" · ")}</div>`;
-      }
+      // 출고장 날짜와 안 겹치는 리오더 입고예정 → 해당 컬러 하단 표기
+      const sched=uncovered(c.code);
+      const schedHtml=sched.length?`<div class="sched">🔄 입고예정(생산): ${sched.join(" · ")}</div>`:"";
       return `<div class="cblock"><div class="cdot">${c.code} · ${c.cname}${vendors.length?` <span class="ven">🚚 ${vendors.join("/")}</span>`:""}</div>
         <table class="stbl"><thead><tr><th>사이즈</th><th>마이너스</th><th>입고</th><th>입고일정</th></tr></thead>
         <tbody>${body}</tbody>
         <tfoot><tr><td>계</td><td class="neg">${num(negT)}</td><td class="inq">${inT?'+'+num(inT):'-'}</td><td></td></tr></tfoot></table>${schedHtml}</div>`;
     }).join("");
-    const etc=Object.keys(pendByColor).filter(col=>!negColors.has(col) && !(INC[s.style+"|"+col]||[]).length).map(col=>`${col} ${pendByColor[col].join(" · ")}`);
+    const etc=Object.keys(pendByColor).filter(col=>!negColors.has(col)).map(col=>({col,texts:uncovered(col)})).filter(x=>x.texts.length).map(x=>`${x.col} ${x.texts.join(" · ")}`);
     const etcHtml=etc.length?`<div class="etc">🔄 기타 컬러 리오더 — ${etc.join(" / ")}</div>`:"";
     return `<div class="card">
       <div class="chead"><div class="titleline"><span class="cstyle">${s.style}</span><span class="cname">${s.name}</span></div>
