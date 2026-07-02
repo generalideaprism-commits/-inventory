@@ -62,6 +62,20 @@
   .chip.arr{border-color:var(--accent)} .chip.arr .q{color:#a9c7ff}
   .chip.plan{border-color:var(--amber)} .chip.plan .q{color:var(--amber)}
   .chip.none{color:var(--gray)}
+  .titleline{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .titleline .cstyle{font-size:13px}
+  .titleline .cname{font-size:16px;font-weight:600;color:var(--text)}
+  .cblocks{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+  .cblock{border:1px solid var(--line);border-radius:8px;padding:9px 11px;background:var(--panel2);min-width:190px}
+  .cblock .cdot{font-size:13px;font-weight:700;margin-bottom:6px}
+  .stbl{border-collapse:collapse;font-size:12.5px;width:100%}
+  .stbl th{color:var(--muted);font-weight:600;text-align:right;padding:3px 10px;border-bottom:1px solid var(--line)}
+  .stbl th:first-child{text-align:left}
+  .stbl td{text-align:right;padding:3px 10px}
+  .stbl td:first-child{text-align:left;color:var(--muted);font-weight:600}
+  .stbl .neg{color:var(--red);font-weight:700}
+  .stbl .inq{color:var(--accent);font-weight:700}
+  .stbl tfoot td{border-top:1px solid var(--line);font-weight:800}
   footer{color:var(--muted);font-size:12px;margin-top:24px;text-align:center;line-height:1.7}
 </style>
 </head>
@@ -82,7 +96,7 @@
 <div class="note">
   <b>읽는 법</b> — 생산시트 <b>리오더 탭 AM열</b>이 <b style="color:var(--green)">입고완료</b>인 스타일은 제외하고,
   <b style="color:var(--amber)">🔄 입고예정</b>(예: "7/8 입고예정", "잔량 7/3 입고예정")이 남은 마이너스 스타일만 보여줍니다.
-  각 컬러의 빨간 숫자는 <b>부족(가용합계)</b>, 아래 <b style="color:var(--accent)">🚚 실물도착</b>은 입고현황 시트의 실제 도착분(전산 미반영)입니다.
+  컬러·사이즈별로 <b style="color:var(--red)">마이너스</b>(부족) 옆에 <b style="color:var(--accent)">입고수량</b>(입고현황 시트의 이번 달·전산 미반영 도착분)을 나란히 표시합니다.
 </div>
 
 <div class="filters" id="filters">
@@ -133,10 +147,13 @@ const NEG = [
  {style:"WBE2L05512", name:"에어리 에센셜 하프 니트", year:2025, season:"여름", colors:[{code:"BL",cname:"BLUE",short:-1,sizes:"M -1"}]},
 ];
 
-let PROD={}, INC={}, meta={state:"loading"}, curFilter="pending";
+let PROD={}, INC={}, INCSIZE={}, meta={state:"loading"}, curFilter="pending";
 const num = n => (Number(n)||0).toLocaleString("ko-KR");
 const isDate = s => /^\d{4}-\d{2}-\d{2}$/.test(s||"");
 const pad = n => String(n).padStart(2,"0");
+const SIZE_ORDER = ["F","XS","S","M","L","XL","XXL"];
+function parseSizes(str){ const o={}; (str||"").split("·").forEach(t=>{ const m=t.trim().match(/^([A-Za-z]+)\s*(-?\d+)$/); if(m)o[m[1]]=Number(m[2]); }); return o; }
+function orderSizes(set){ const a=SIZE_ORDER.filter(z=>set.has(z)); [...set].forEach(z=>{ if(!SIZE_ORDER.includes(z))a.push(z); }); return a; }
 
 // ── 리오더 AM열 파싱: style -> {pending:[{color,text}], doneColors:Set} ──
 function buildProd(rows){
@@ -164,7 +181,7 @@ function tabVendor(t){ return String(t||"").replace(/^\s*\d{1,2}월\s*\d{1,2}일
 function tabDate(t){ const m=String(t||"").match(/(\d{1,2})월\s*(\d{1,2})일?/); return m?`2026-${pad(m[1])}-${pad(m[2])}`:""; }
 function pickDate(sh){ return isDate(sh.actualIn)?sh.actualIn:isDate(sh.arrivePlan)?sh.arrivePlan:isDate(sh.chulgoDate)?sh.chulgoDate:tabDate(sh.tab); }
 function buildIncoming(shipments){
-  INC={}; const today=new Date(); today.setHours(0,0,0,0);
+  INC={}; INCSIZE={}; const today=new Date(); today.setHours(0,0,0,0);
   const cut=new Date(today.getFullYear(), today.getMonth(), 1);
   (shipments||[]).forEach(sh=>{
     const d=pickDate(sh);
@@ -172,7 +189,12 @@ function buildIncoming(shipments){
     if(isDate(sh.reflectDate) && new Date(sh.reflectDate)<=today) return; // 전산반영 완료
     const date=d, vendor=tabVendor(sh.tab), arrived=isDate(sh.actualIn);
     const agg={};
-    (sh.items||[]).forEach(it=>{ const k=(it.style||"").trim()+"|"+(it.color||"").trim(); agg[k]=(agg[k]||0)+(Number(it.qty)||0); });
+    (sh.items||[]).forEach(it=>{
+      const style=(it.style||"").trim(), color=(it.color||"").trim(), size=(it.size||"").trim(), q=Number(it.qty)||0;
+      if(q<=0) return;
+      const k=style+"|"+color; agg[k]=(agg[k]||0)+q;
+      const sk=k+"|"+size; INCSIZE[sk]=(INCSIZE[sk]||0)+q;   // 컬러·사이즈별 입고수량 누적
+    });
     Object.keys(agg).forEach(k=>{ if(agg[k]>0)(INC[k]=INC[k]||[]).push({date,vendor,qty:agg[k],arrived}); });
   });
 }
@@ -225,20 +247,24 @@ function render(filter){
       reorder=`<div class="reorder"><div class="rlbl">🔄 리오더 입고예정 (생산시트 AM열)</div>
         <div class="rchips">${p.pending.map(x=>`<span class="rchip"><span class="c">${x.color||"-"}</span><b>${x.text}</b></span>`).join("")}</div></div>`;
     }
-    // 컬러별 부족 + 실물도착
-    const rows=s.colors.map(c=>{
-      const inc=incFor(s.style,c.code);
-      const incHtml = inc.length
-        ? `<div class="chips">${inc.map(x=>`<span class="chip ${x.arrived?'arr':'plan'}"><span class="d">${x.date}${x.vendor?' · '+x.vendor:''}</span><span class="q">+${num(x.qty)}</span></span>`).join("")}</div>`
-        : `<div class="chips"><span class="chip none">-</span></div>`;
-      return `<div class="crow">
-        <div class="color"><span class="cdot">${c.code} · ${c.cname}</span>
-          <div class="short">${num(c.short)}</div><div class="sizes">${c.sizes}</div></div>
-        <div class="arrivals"><div class="albl">🚚 실물도착 (입고현황·미반영)</div>${incHtml}</div>
-      </div>`;
-    }).join("");
+    // 컬러·사이즈별 [마이너스 재고 | 입고수량] 테이블
+    const rows=`<div class="cblocks">`+s.colors.map(c=>{
+      const neg=parseSizes(c.sizes), key=s.style+"|"+c.code;
+      const szset=new Set(Object.keys(neg));
+      Object.keys(INCSIZE).forEach(k=>{ if(k.startsWith(key+"|")) szset.add(k.slice(key.length+1)); });
+      let negT=0, inT=0;
+      const body=orderSizes(szset).map(z=>{
+        const nv=neg[z], iv=INCSIZE[key+"|"+z];
+        if(nv!=null)negT+=nv; if(iv!=null)inT+=iv;
+        return `<tr><td>${z}</td><td class="neg">${nv!=null?num(nv):'-'}</td><td class="inq">${iv!=null?'+'+num(iv):'-'}</td></tr>`;
+      }).join("");
+      return `<div class="cblock"><div class="cdot">${c.code} · ${c.cname}</div>
+        <table class="stbl"><thead><tr><th>사이즈</th><th>마이너스</th><th>입고</th></tr></thead>
+        <tbody>${body}</tbody>
+        <tfoot><tr><td>계</td><td class="neg">${num(negT)}</td><td class="inq">${inT?'+'+num(inT):'-'}</td></tr></tfoot></table></div>`;
+    }).join("")+`</div>`;
     return `<div class="card">
-      <div class="chead"><div><div class="cstyle">${s.style}</div><div class="cname">${s.name}</div><div class="cmeta">${s.year} ${s.season}</div></div>
+      <div class="chead"><div class="titleline"><span class="cstyle">${s.style}</span><span class="cname">${s.name}</span></div>
         <span class="badge ${bcls}">${btxt}</span></div>
       ${reorder}${rows}</div>`;
   }).join("");
