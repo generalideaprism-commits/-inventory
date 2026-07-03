@@ -107,7 +107,6 @@
 <div class="filters" id="filters">
   <button data-f="all">전체</button>
   <button data-f="pending" class="active">🔄 입고예정</button>
-  <button data-f="done">✅ 입고완료</button>
   <button data-f="noreorder">리오더 없음</button>
 </div>
 
@@ -250,7 +249,7 @@ async function loadLive(){
     buildProd(j.production); buildIncoming(j.shipments);
     meta={state:"ok", updated:j.updated, ships:(j.shipments||[]).length, prods:(j.production||[]).length};
   }catch(e){ meta={state:"err", err:String(e)}; }
-  btn.disabled=false; renderLiveBar(); renderKpis(); render(curFilter);
+  btn.disabled=false; renderLiveBar(); render(curFilter);
 }
 function renderLiveBar(){
   const dot=document.getElementById("livedot"), msg=document.getElementById("livemsg"), fm=document.getElementById("footmeta");
@@ -262,21 +261,19 @@ function renderLiveBar(){
   fm.textContent=`마지막 갱신 ${ts} · AM열 '입고완료' 자동 제외`;
 }
 
-function renderKpis(){
-  let qty=0; NEG.forEach(s=>s.colors.forEach(c=>qty+=c.short));
-  let pend=0, done=0;
-  NEG.forEach(s=>{ const st=statusOf(s.style); if(st==="pending")pend++; else if(st==="done")done++; });
+function renderKpis(filter){
+  const items=NEG.filter(s=>{ const st=statusOf(s.style); return filter==="all"?true:st===filter; });
+  let qty=0; items.forEach(s=>s.colors.forEach(c=>qty+=c.short));
   const k=[
-    {n:NEG.length,l:"마이너스 스타일 수",cls:"red"},
+    {n:items.length,l:"마이너스 스타일 수",cls:"red"},
     {n:num(qty),l:"총 마이너스 수량",cls:"red"},
-    {n:pend,l:"🔄 입고예정 남은 스타일",cls:"blue"},
-    {n:done,l:"✅ 입고완료(제외) 스타일",cls:"green"},
   ];
   document.getElementById("kpis").innerHTML=k.map(x=>`<div class="kpi ${x.cls}"><div class="n">${x.n}</div><div class="l">${x.l}</div></div>`).join("");
 }
 
 function render(filter){
   curFilter=filter;
+  renderKpis(filter);
   const list=document.getElementById("list");
   const items=NEG.filter(s=>{ const st=statusOf(s.style); return filter==="all"?true:st===filter; });
   const badge={pending:["🔄 입고예정","b-pending"],done:["✅ 입고완료","b-done"],noreorder:["리오더 없음","b-none"]};
@@ -332,7 +329,7 @@ document.querySelectorAll("#filters button").forEach(b=>{
 (function(){ const t=new Date();
   document.getElementById("sub").innerHTML=`GENERAL IDEA · 마이너스 재고 ↔ 리오더 입고예정(생산시트 AM열) 실시간 매칭 · 기준일 ${t.getFullYear()}-${pad(t.getMonth()+1)}-${pad(t.getDate())}`;
 })();
-renderKpis(); render("pending"); loadLive();
+render("pending"); loadLive();
 </script>
 </body>
 </html>
