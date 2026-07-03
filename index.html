@@ -123,33 +123,67 @@ const SHEET_URL = "https://script.google.com/macros/s/AKfycbzGRAhjdY7ba3iYykERsJ
 
 // 마이너스 재고 (스냅샷)
 const NEG = [
- {style:"GF2LKC541", name:"[온도컷] 쿨 에센셜 하프 가디건", year:2026, season:"여름",
-  colors:[{code:"BK",cname:"BLACK",short:-253,sizes:"S -189 · L -34 · XL -30"},{code:"SM",cname:"SAGE MINT",short:-225,sizes:"M -143 · S -65 · L -17"}]},
- {style:"GF2LTS527", name:"드레이프 셔링 반팔 티셔츠", year:2026, season:"여름",
-  colors:[{code:"CH",cname:"CHARCOAL",short:-347,sizes:"L -112 · S -112 · M -90 · XL -33"}]},
- {style:"GF2LSH522", name:"레이스 케미솔 탑", year:2026, season:"여름",
-  colors:[{code:"MI",cname:"MINT",short:-77,sizes:"S -48 · M -20 · L -5 · XL -4"},{code:"WH",cname:"WHITE",short:-32,sizes:"S -31 · M -1"},{code:"BK",cname:"BLACK",short:-24,sizes:"L -12 · S -10 · M -2"}]},
- {style:"GF2LSH521", name:"레이스 라운드 카라 블라우스", year:2026, season:"여름",
-  colors:[{code:"NA",cname:"NAVY",short:-58,sizes:"L -33 · S -25"}]},
- {style:"GF2UPT017", name:"스티치 포인트 스트링 팬츠", year:2026, season:"여름",
-  colors:[{code:"BR",cname:"BROWN",short:-1,sizes:"S -1"}]},
- {style:"WBE2L04540", name:"패커블 시어 롱 슬리브 가디건", year:2025, season:"여름",
-  colors:[{code:"MG",cname:"MELANGE GRAY",short:-271,sizes:"S -83 · L -81 · XL -78 · M -29"}]},
- {style:"WBD2L05528", name:"텐셀 케이블 하프 니트", year:2024, season:"여름",
-  colors:[{code:"BK",cname:"BLACK",short:-5,sizes:"S -2 · M -2 · XL -1"},{code:"IV",cname:"IVORY",short:-1,sizes:"S -1"}]},
- {style:"WBD2L01518", name:"GNRL 언밸런스 실켓 스판 반팔티", year:2024, season:"여름",
-  colors:[{code:"BK",cname:"BLACK",short:-3,sizes:"M -2 · L -1"}]},
- {style:"QBD1L95503", name:"에센셜 데일리 하이 삭스", year:2024, season:"봄", colors:[{code:"MT",cname:"MULTI",short:-2,sizes:"F -2"}]},
- {style:"WBD2L04527", name:"텐셀 에센셜 하프 가디건", year:2024, season:"여름", colors:[{code:"PI",cname:"PINK",short:-2,sizes:"M -2"}]},
- {style:"WBE1L94513", name:"리얼 레더 미니멀 웨스턴 벨트", year:2025, season:"봄", colors:[{code:"BK",cname:"BLACK",short:-2,sizes:"F -2"}]},
- {style:"SBE2U01007", name:"NB 데일리 코튼 반팔티", year:2025, season:"여름", colors:[{code:"WH",cname:"WHITE",short:-1,sizes:"L -1"}]},
- {style:"SBD1U52040", name:"에센셜 코지 스웨트 조거 팬츠", year:2024, season:"봄", colors:[{code:"MG",cname:"MELANGE GRAY",short:-1,sizes:"S -1"}]},
- {style:"WBD3L91501", name:"GNRL 베이직 로고 볼캡", year:2024, season:"가을", colors:[{code:"KH",cname:"KHAKI",short:-1,sizes:"F -1"}]},
- {style:"WBD3L04507", name:"GNRL 에센셜 후드 집업", year:2024, season:"가을", colors:[{code:"BE",cname:"BEIGE",short:-1,sizes:"S -1"}]},
- {style:"WBE2L01531", name:"NA 아세테이트 크루넥 셔링 반팔티", year:2025, season:"여름", colors:[{code:"BK",cname:"BLACK",short:-1,sizes:"L -1"}]},
- {style:"WBE2L01513", name:"뉴베이직 슬림 브이넥 반팔티", year:2025, season:"여름", colors:[{code:"BK",cname:"BLACK",short:-1,sizes:"M -1"}]},
- {style:"SBE2U91006", name:"5PANEL 레터링 트러커 캡", year:2025, season:"여름", colors:[{code:"BU",cname:"BURGUNDY",short:-1,sizes:"F -1"}]},
- {style:"WBE2L05512", name:"에어리 에센셜 하프 니트", year:2025, season:"여름", colors:[{code:"BL",cname:"BLUE",short:-1,sizes:"M -1"}]},
+ {style:"GF2LTS527", name:"드레이프 셔링 반팔 티셔츠", colors:[
+   {code:"CH", cname:"CHARCOAL", short:-370, sizes:"S -123 · M -97 · L -114 · XL -36"}
+ ]},
+ {style:"GF2LKC541", name:"[온도컷] 쿨 에센셜 하프 가디건", colors:[
+   {code:"SM", cname:"SAGE MINT", short:-213, sizes:"S -65 · M -132 · L -16"},
+   {code:"BK", cname:"BLACK", short:-65, sizes:"L -35 · XL -30"}
+ ]},
+ {style:"WBE2L04540", name:"패커블 시어 롱 슬리브 가디건", colors:[
+   {code:"MG", cname:"MELANGE GRAY", short:-268, sizes:"S -80 · M -31 · L -80 · XL -77"}
+ ]},
+ {style:"GF2LSH522", name:"레이스 케미솔 탑", colors:[
+   {code:"MI", cname:"MINT", short:-77, sizes:"S -48 · M -21 · L -5 · XL -3"},
+   {code:"WH", cname:"WHITE", short:-34, sizes:"S -31 · M -3"},
+   {code:"BK", cname:"BLACK", short:-30, sizes:"S -13 · M -2 · L -15"}
+ ]},
+ {style:"WBD2L05528", name:"텐셀 케이블 하프 니트", colors:[
+   {code:"BK", cname:"BLACK", short:-5, sizes:"S -2 · M -2 · XL -1"},
+   {code:"IV", cname:"IVORY", short:-1, sizes:"S -1"}
+ ]},
+ {style:"GF2LKP531", name:"셔츠 카라 피케 하프 니트", colors:[
+   {code:"NA", cname:"NAVY", short:-4, sizes:"S -4"}
+ ]},
+ {style:"QBD1L95503", name:"에센셜 데일리 하이 삭스", colors:[
+   {code:"MT", cname:"multi", short:-2, sizes:"F -2"}
+ ]},
+ {style:"WBD2L01518", name:"GNRL 언밸런스 실켓 스판 반팔티", colors:[
+   {code:"BK", cname:"BLACK", short:-2, sizes:"S -2"}
+ ]},
+ {style:"WBD2L04527", name:"텐셀 에센셜 하프 가디건", colors:[
+   {code:"PI", cname:"PINK", short:-2, sizes:"M -2"}
+ ]},
+ {style:"WBE1L94513", name:"리얼 레더 미니멀 웨스턴 벨트", colors:[
+   {code:"BK", cname:"BLACK", short:-2, sizes:"F -2"}
+ ]},
+ {style:"SBD1U52040", name:"에센셜 코지 스웨트 조거 팬츠", colors:[
+   {code:"MG", cname:"MELANGE GRAY", short:-1, sizes:"S -1"}
+ ]},
+ {style:"SBE2U01007", name:"NB 데일리 코튼 반팔티", colors:[
+   {code:"WH", cname:"WHITE", short:-1, sizes:"L -1"}
+ ]},
+ {style:"WBD2L01536", name:"GNRL 스트라이프 반팔 티셔츠", colors:[
+   {code:"WH", cname:"WHITE", short:-1, sizes:"M -1"}
+ ]},
+ {style:"WBD2L43545", name:"브이넥 케이블 하프 가디건", colors:[
+   {code:"PI", cname:"PINK", short:-1, sizes:"S -1"}
+ ]},
+ {style:"WBD3L04507", name:"GNRL 에센셜 후드 집업", colors:[
+   {code:"BE", cname:"BEIGE", short:-1, sizes:"S -1"}
+ ]},
+ {style:"WBE2L01513", name:"뉴베이직 슬림 브이넥 반팔티", colors:[
+   {code:"BK", cname:"BLACK", short:-1, sizes:"M -1"}
+ ]},
+ {style:"WBE2L01531", name:"NA 아세테이트 크루넥 셔링 반팔티", colors:[
+   {code:"BK", cname:"BLACK", short:-1, sizes:"L -1"}
+ ]},
+ {style:"WBE2L05512", name:"에어리 에센셜 하프 니트", colors:[
+   {code:"BL", cname:"BLUE", short:-1, sizes:"M -1"}
+ ]},
+ {style:"WBE2L05513", name:"에어리 에센셜 카라 하프 니트", colors:[
+   {code:"PI", cname:"PINK", short:-1, sizes:"M -1"}
+ ]}
 ];
 
 let PROD={}, INC={}, INCSIZE={}, INCSIZED={}, meta={state:"loading"}, curFilter="pending";
