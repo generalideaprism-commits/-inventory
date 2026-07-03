@@ -6,10 +6,10 @@
 <title>마이너스 재고 입고 매칭 대시보드</title>
 <style>
   :root{
-    --bg:#0f1420; --panel:#171e2e; --panel2:#1e2740; --line:#2a3350;
-    --text:#e8ecf5; --muted:#8b96b0; --accent:#4f8cff;
-    --green:#2fbf71; --amber:#f0a020; --red:#ff5a6a; --gray:#5a6580;
-    --chip:#243050;
+    --bg:#f6f7f9; --panel:#ffffff; --panel2:#f9fafb; --line:#e5e7eb;
+    --text:#111827; --muted:#6b7280; --accent:#2563eb;
+    --green:#059669; --amber:#b45309; --red:#dc2626; --gray:#9ca3af;
+    --chip:#f3f4f6;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--text);font-family:"Pretendard","Malgun Gothic",-apple-system,system-ui,sans-serif;line-height:1.5;padding:24px;max-width:1200px;margin:0 auto}
@@ -59,7 +59,7 @@
   .chip{background:var(--chip);border:1px solid var(--line);border-radius:7px;padding:5px 9px;font-size:12px;white-space:nowrap}
   .chip .d{color:var(--muted);font-size:11px}
   .chip .q{font-weight:700;margin-left:6px}
-  .chip.arr{border-color:var(--accent)} .chip.arr .q{color:#a9c7ff}
+  .chip.arr{border-color:var(--accent)} .chip.arr .q{color:var(--accent)}
   .chip.plan{border-color:var(--amber)} .chip.plan .q{color:var(--amber)}
   .chip.none{color:var(--gray)}
   .titleline{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
@@ -105,9 +105,9 @@
 </div>
 
 <div class="filters" id="filters">
-  <button data-f="pending" class="active">🔄 입고예정 남음</button>
   <button data-f="all">전체</button>
-  <button data-f="done">✅ 입고완료(제외분)</button>
+  <button data-f="pending" class="active">🔄 입고예정</button>
+  <button data-f="done">✅ 입고완료</button>
   <button data-f="noreorder">리오더 없음</button>
 </div>
 
