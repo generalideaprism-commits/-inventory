@@ -122,49 +122,53 @@ const SHEET_URL = "https://script.google.com/macros/s/AKfycbzGRAhjdY7ba3iYykERsJ
 
 // 마이너스 재고 (스냅샷)
 const NEG = [
- {style:"GF2LTS527", name:"드레이프 셔링 반팔 티셔츠", colors:[
-   {code:"CH", cname:"CHARCOAL", short:-552, sizes:"S -183 · M -129 · L -171 · XL -69"},
-   {code:"WH", cname:"WHITE", short:-5, sizes:"XL -5"}
- ]},
  {style:"GF2LKC541", name:"[온도컷] 쿨 에센셜 하프 가디건", colors:[
-   {code:"BK", cname:"BLACK", short:-202, sizes:"S -148 · XL -54"},
-   {code:"SM", cname:"SAGE MINT", short:-239, sizes:"S -71 · M -145 · L -23"}
+   {code:"BK", cname:"BLACK", short:-213, sizes:"S -157 · XL -56"},
+   {code:"SM", cname:"SAGE MINT", short:-253, sizes:"S -78 · M -148 · L -27"}
  ]},
  {style:"WBE2L04540", name:"패커블 시어 롱 슬리브 가디건", colors:[
-   {code:"MG", cname:"MELANGE GRAY", short:-323, sizes:"S -86 · M -51 · L -93 · XL -93"}
+   {code:"MG", cname:"MELANGE GRAY", short:-338, sizes:"S -89 · M -58 · L -94 · XL -97"}
  ]},
  {style:"GF2LSH522", name:"레이스 케미솔 탑", colors:[
-   {code:"MI", cname:"MINT", short:-89, sizes:"S -53 · M -26 · L -8 · XL -2"},
-   {code:"WH", cname:"WHITE", short:-53, sizes:"S -39 · M -9 · L -5"},
-   {code:"BK", cname:"BLACK", short:-42, sizes:"S -19 · M -7 · L -16"}
+   {code:"MI", cname:"MINT", short:-93, sizes:"S -56 · M -27 · L -8 · XL -2"},
+   {code:"WH", cname:"WHITE", short:-62, sizes:"S -46 · M -11 · L -5"},
+   {code:"BK", cname:"BLACK", short:-46, sizes:"S -23 · M -8 · L -15"}
+ ]},
+ {style:"GF2LTS527", name:"드레이프 셔링 반팔 티셔츠", colors:[
+   {code:"WH", cname:"WHITE", short:-48, sizes:"S -31 · L -8 · XL -9"},
+   {code:"CH", cname:"CHARCOAL", short:-50, sizes:"S -13 · L -17 · XL -20"}
+ ]},
+ {style:"GF2LSH521", name:"레이스 라운드 카라 블라우스", colors:[
+   {code:"NA", cname:"NAVY", short:-9, sizes:"S -3 · M -3 · L -3"}
  ]},
  {style:"GF2LKP531", name:"셔츠 카라 피케 하프 니트", colors:[
    {code:"NA", cname:"NAVY", short:-7, sizes:"S -7"}
  ]},
+ {style:"WBD2L05528", name:"텐셀 케이블 하프 니트", colors:[
+   {code:"BK", cname:"BLACK", short:-4, sizes:"M -3 · XL -1"},
+   {code:"IV", cname:"IVORY", short:-1, sizes:"S -1"}
+ ]},
  {style:"WBD2L01518", name:"GNRL 언밸런스 실켓 스판 반팔티", colors:[
    {code:"BL", cname:"BLUE", short:-4, sizes:"S -2 · M -1 · L -1"}
  ]},
- {style:"WBD2L05528", name:"텐셀 케이블 하프 니트", colors:[
-   {code:"BK", cname:"BLACK", short:-3, sizes:"M -2 · XL -1"},
-   {code:"IV", cname:"IVORY", short:-1, sizes:"S -1"}
- ]},
- {style:"QBD1L95503", name:"에센셜 데일리 하이 삭스", colors:[
-   {code:"MT", cname:"multi", short:-2, sizes:"F -2"}
- ]},
- {style:"GF2LSH521", name:"레이스 라운드 카라 블라우스", colors:[
-   {code:"NA", cname:"NAVY", short:-2, sizes:"S -2"}
+ {style:"WBE2L03530", name:"캡 슬리브 필트넥 셔링 블라우스", colors:[
+   {code:"BK", cname:"BLACK", short:-3, sizes:"M -1 · L -2"}
  ]},
  {style:"WBE1L94513", name:"리얼 레더 미니멀 웨스턴 벨트", colors:[
    {code:"BK", cname:"BLACK", short:-2, sizes:"F -2"}
  ]},
- {style:"GF2LTS541", name:"푸드마켓 아트웍 반팔티", colors:[
-   {code:"CR", cname:"CREAM", short:-1, sizes:"S -1"}
+ {style:"QBD1L95503", name:"에센셜 데일리 하이 삭스", colors:[
+   {code:"MT", cname:"multi", short:-2, sizes:"F -2"}
  ]},
- {style:"SBE2U01007", name:"NB 데일리 코튼 반팔티", colors:[
-   {code:"WH", cname:"WHITE", short:-1, sizes:"L -1"}
+ {style:"WBD2L04527", name:"텐셀 에센셜 하프 가디건", colors:[
+   {code:"WH", cname:"WHITE", short:-1, sizes:"M -1"},
+   {code:"PI", cname:"PINK", short:-1, sizes:"M -1"}
  ]},
  {style:"WBE2L05513", name:"에어리 에센셜 카라 하프 니트", colors:[
    {code:"PI", cname:"PINK", short:-1, sizes:"M -1"}
+ ]},
+ {style:"SBE2U01007", name:"NB 데일리 코튼 반팔티", colors:[
+   {code:"WH", cname:"WHITE", short:-1, sizes:"L -1"}
  ]},
  {style:"WBE2L01531", name:"NA 아세테이트 크루넥 셔링 반팔티", colors:[
    {code:"BK", cname:"BLACK", short:-1, sizes:"L -1"}
@@ -172,17 +176,20 @@ const NEG = [
  {style:"WBE2L01513", name:"뉴베이직 슬림 브이넥 반팔티", colors:[
    {code:"BK", cname:"BLACK", short:-1, sizes:"M -1"}
  ]},
- {style:"WBD2L04527", name:"텐셀 에센셜 하프 가디건", colors:[
-   {code:"PI", cname:"PINK", short:-1, sizes:"M -1"}
+ {style:"WBD1L01503", name:"GNRL 실켓 스판 티셔츠", colors:[
+   {code:"VC", cname:"VINTAGE CHARCOAL", short:-1, sizes:"L -1"}
  ]},
- {style:"WBD3L04507", name:"GNRL 에센셜 후드 집업", colors:[
-   {code:"BE", cname:"BEIGE", short:-1, sizes:"S -1"}
+ {style:"WBE2L05512", name:"에어리 에센셜 하프 니트", colors:[
+   {code:"BL", cname:"BLUE", short:-1, sizes:"M -1"}
+ ]},
+ {style:"GF2UTS016", name:"아스파라거스 그래픽 반팔 티셔츠", colors:[
+   {code:"CH", cname:"CHARCOAL", short:-1, sizes:"L -1"}
  ]},
  {style:"SBD1U52040", name:"에센셜 코지 스웨트 조거 팬츠", colors:[
    {code:"MG", cname:"MELANGE GRAY", short:-1, sizes:"S -1"}
  ]},
- {style:"WBE2L05512", name:"에어리 에센셜 하프 니트", colors:[
-   {code:"BL", cname:"BLUE", short:-1, sizes:"M -1"}
+ {style:"WBD3L04507", name:"GNRL 에센셜 후드 집업", colors:[
+   {code:"BE", cname:"BEIGE", short:-1, sizes:"S -1"}
  ]}
 ];
 
