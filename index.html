@@ -236,9 +236,13 @@ function buildIncoming(shipments){
     if(isDate(d) && new Date(d)<cut) return;                       // 지난달 이전 완료
     if(isDate(sh.reflectDate) && new Date(sh.reflectDate)<=today) return; // 전산반영 완료
     const date=d, vendor=tabVendor(sh.tab), arrived=isDate(sh.actualIn);
-    const agg={};
+    const agg={}; let lastStyle="", lastColor="";
     (sh.items||[]).forEach(it=>{
-      const style=(it.style||"").trim(), color=(it.color||"").trim(), size=(it.size||"").trim(), q=Number(it.qty)||0;
+      const style=(it.style||"").trim();
+      if(style!==lastStyle){ lastStyle=style; lastColor=""; }     // 스타일 바뀌면 컬러 리셋
+      let color=(it.color||"").trim();
+      if(color) lastColor=color; else color=lastColor;            // 병합셀(빈 컬러)은 위 컬러 이어받기
+      const size=(it.size||"").trim(), q=Number(it.qty)||0;
       if(q<=0) return;
       const k=style+"|"+color; agg[k]=(agg[k]||0)+q;
       const sk=k+"|"+size; INCSIZE[sk]=(INCSIZE[sk]||0)+q;   // 컬러·사이즈별 입고수량 누적
