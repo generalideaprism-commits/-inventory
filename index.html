@@ -287,23 +287,33 @@ function buildIncoming(shipments){
 }
 const incFor=(st,c)=> (INC[st+"|"+c]||[]).slice().sort((a,b)=>a.date<b.date?-1:1);
 
+function applyLive(j, stale){
+  buildProd(j.production); buildIncoming(j.shipments);
+  meta={state:"ok", updated:j.updated, ships:(j.shipments||[]).length, prods:(j.production||[]).length, stale:!!stale};
+  renderLiveBar(); render(curFilter);
+}
 async function loadLive(){
   const btn=document.getElementById("refresh"); btn.disabled=true;
-  meta={state:"loading"}; renderLiveBar();
+  // 1) 캐시된 직전 데이터를 즉시 표시 (체감 속도 ↑)
+  let shown=false;
+  try{ const c=localStorage.getItem("liveCache"); if(c){ applyLive(JSON.parse(c), true); shown=true; } }catch(e){}
+  if(!shown){ meta={state:"loading"}; renderLiveBar(); }
+  // 2) 백그라운드로 최신 불러와 갱신
   try{
     const j=await (await fetch(SHEET_URL,{cache:"no-store"})).json();
-    buildProd(j.production); buildIncoming(j.shipments);
-    meta={state:"ok", updated:j.updated, ships:(j.shipments||[]).length, prods:(j.production||[]).length};
-  }catch(e){ meta={state:"err", err:String(e)}; }
-  btn.disabled=false; renderLiveBar(); render(curFilter);
+    try{ localStorage.setItem("liveCache", JSON.stringify(j)); }catch(e){}
+    applyLive(j, false);
+  }catch(e){ if(!shown){ meta={state:"err", err:String(e)}; renderLiveBar(); } }
+  btn.disabled=false;
 }
 function renderLiveBar(){
   const dot=document.getElementById("livedot"), msg=document.getElementById("livemsg"), fm=document.getElementById("footmeta");
   if(meta.state==="loading"){ dot.className="livedot"; msg.textContent="실시간 데이터 동기화 중…"; return; }
   if(meta.state==="err"){ dot.className="livedot err"; msg.innerHTML="실시간 연동 실패 — <b>새로고침</b>을 눌러 다시 시도하세요."; fm.textContent="실시간 연동 실패"; return; }
-  dot.className="livedot ok";
+  dot.className=meta.stale?"livedot":"livedot ok";
   const t=new Date(meta.updated), ts=`${t.getFullYear()}-${pad(t.getMonth()+1)}-${pad(t.getDate())} ${pad(t.getHours())}:${pad(t.getMinutes())}`;
-  msg.innerHTML=`실시간 연동됨 · 리오더 <b>${num(meta.prods)}행</b> · 입고현황 <b>${meta.ships}건</b> · 갱신 ${ts}`;
+  msg.innerHTML=`실시간 연동됨 · 리오더 <b>${num(meta.prods)}행</b> · 입고현황 <b>${meta.ships}건</b> · 갱신 ${ts}`
+    + (meta.stale?` · <span style="color:var(--amber)">🔄 최신 불러오는 중…</span>`:``);
   fm.textContent=`마지막 갱신 ${ts} · AM열 '입고완료' 자동 제외`;
 }
 
