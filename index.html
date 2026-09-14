@@ -169,6 +169,8 @@ const NEG = [
  ]}
 ];
 
+const FWREORDER = [];  /* 26FW 생산스케줄 리오더(ㄱㄱ 시 주입, Apps Script 피드 미포함분) */
+
 let PROD={}, INC={}, INCSIZE={}, INCSIZED={}, meta={state:"loading"}, curFilter="pending", curSeason="all";
 function seasonGroup(s){ const v=s.season||""; return v==="26SS"?"26SS":v==="26FW"?"26FW":"이월"; }
 function seasCls(s){ const g=seasonGroup(s); return g==="26SS"?"ss":g==="26FW"?"fw":"etc"; }
@@ -233,7 +235,7 @@ function buildIncoming(shipments){
 const incFor=(st,c)=> (INC[st+"|"+c]||[]).slice().sort((a,b)=>a.date<b.date?-1:1);
 
 function applyLive(j, stale){
-  buildProd(j.production); buildIncoming(j.shipments);
+  buildProd((j.production||[]).concat(FWREORDER)); buildIncoming(j.shipments);
   meta={state:"ok", updated:j.updated, ships:(j.shipments||[]).length, prods:(j.production||[]).length, stale:!!stale};
   renderLiveBar(); render(curFilter);
 }
