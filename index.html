@@ -169,7 +169,7 @@ const NEG = [
  ]}
 ];
 
-const FWREORDER = [];  /* 26FW 생산스케줄 리오더(ㄱㄱ 시 주입, Apps Script 피드 미포함분) */
+const FWREORDER = [{"style": "GF3LKP506", "color": "MG", "am": "9/29 입고예정"}, {"style": "GF3LKP506", "color": "BK", "am": "9/29 입고예정"}, {"style": "GF3LKP506", "color": "BU", "am": "9/29 입고예정"}, {"style": "GF7LKV519", "color": "GR", "am": "파샬입고 1차 9/29 30% 2차 10/6"}, {"style": "GF7LKV519", "color": "BK", "am": "파샬입고 1차 9/29 30% 2차 10/6"}, {"style": "GF7LKV519", "color": "NA", "am": "파샬입고 1차 9/29 30% 2차 10/6"}, {"style": "GF7LKV519", "color": "BU", "am": "파샬입고 1차 9/29 30% 2차 10/6"}, {"style": "GF3LTS501", "color": "CH", "am": "9/30 입고예정"}, {"style": "GF3LTS501", "color": "WH", "am": "9/30 입고예정"}, {"style": "GF7LKV519", "color": "GR", "am": ""}, {"style": "GF7LKV519", "color": "BK", "am": ""}, {"style": "GF7LKV519", "color": "BU", "am": ""}];  /* 26FW 생산스케줄 리오더(ㄱㄱ 시 주입, Apps Script 피드 미포함분) */
 
 let PROD={}, INC={}, INCSIZE={}, INCSIZED={}, meta={state:"loading"}, curFilter="pending", curSeason="all";
 function seasonGroup(s){ const v=s.season||""; return v==="26SS"?"26SS":v==="26FW"?"26FW":"이월"; }
