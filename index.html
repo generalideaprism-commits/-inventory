@@ -99,7 +99,7 @@
   footer{color:var(--muted);font-size:12px;margin-top:24px;text-align:center;line-height:1.7}
 </style>
 </head>
-<body>
+<body class="show-stk">
 <header>
   <h1>📦 마이너스 재고 · 입고 매칭 대시보드</h1>
   <div class="sub" id="sub">GENERAL IDEA · 마이너스 재고 ↔ 리오더 입고예정(생산시트 AM열) 실시간 매칭</div>
@@ -133,7 +133,7 @@
 </div>
 
 <div class="stkbar">
-  <button id="stkToggle" class="stkbtn">📦 재고 열 보기</button>
+  <button id="stkToggle" class="stkbtn on">📦 재고 열 숨기기</button>
   <span class="stkhint">재고 = 마이너스 + 입고수량</span>
 </div>
 
@@ -281,6 +281,17 @@ function buildIncoming(shipments){
   });
 }
 const incFor=(st,c)=> (INC[st+"|"+c]||[]).slice().sort((a,b)=>a.date<b.date?-1:1);
+// 미반영 입고가 마이너스를 컬러·사이즈별로 전부 덮으면 '입고반영 해소'로 간주
+function coveredByIn(s){
+  let anyNeg=false;
+  for(const c of s.colors){
+    const neg=parseSizes(c.sizes), key=s.style+"|"+c.code;
+    for(const z in neg){ anyNeg=true;
+      if(((neg[z]||0)+(INCSIZE[key+"|"+z]||0))<0) return false;
+    }
+  }
+  return anyNeg;
+}
 
 function applyLive(j, stale){
   buildProd((j.production||[]).concat(FWREORDER)); buildIncoming(j.shipments);
@@ -313,7 +324,7 @@ function renderLiveBar(){
 }
 
 function renderKpis(filter){
-  const items=NEG.filter(s=>{ const st=statusOf(s.style); return (filter==="all"?true:st===filter) && matchSeason(s); });
+  const items=NEG.filter(s=>{ if(!matchSeason(s))return false; if(coveredByIn(s))return filter==="all"; const st=statusOf(s.style); return filter==="all"?true:st===filter; });
   let qty=0; items.forEach(s=>s.colors.forEach(c=>qty+=c.short));
   const k=[
     {n:items.length,l:"마이너스 스타일 수",cls:"red"},
@@ -326,10 +337,10 @@ function render(filter){
   curFilter=filter;
   renderKpis(filter);
   const list=document.getElementById("list");
-  const items=NEG.filter(s=>{ const st=statusOf(s.style); return (filter==="all"?true:st===filter) && matchSeason(s); });
+  const items=NEG.filter(s=>{ if(!matchSeason(s))return false; if(coveredByIn(s))return filter==="all"; const st=statusOf(s.style); return filter==="all"?true:st===filter; });
   const badge={pending:["🔄 입고예정","b-pending"],done:["✅ 입고완료","b-done"],noreorder:["리오더 없음","b-none"]};
   list.innerHTML=items.map(s=>{
-    const stt=statusOf(s.style), [btxt,bcls]=badge[stt];
+    const cov=coveredByIn(s), stt=statusOf(s.style), [btxt,bcls]= cov?["✅ 입고반영 해소","b-done"]:badge[stt];
     const p=PROD[s.style]||{pending:[]};
     const pendByColor={}; (p.pending||[]).forEach(x=>{ (pendByColor[x.color]=pendByColor[x.color]||[]).push(x.text); });
     const negColors=new Set(s.colors.map(c=>c.code));
