@@ -337,6 +337,7 @@ function render(filter){
     const uncovered=(color)=>{
       const ioDates=new Set(incFor(s.style,color).map(x=>mmdd(x.date)));
       return (pendByColor[color]||[]).filter(t=>{
+        if(/파샬|잔량/.test(t)) return true;   // 파샬(부분입고) 진행노트는 실입고일과 겹쳐도 항상 표시
         for(const dm of ioDates){ if(new RegExp("(^|\\D)"+dm.replace("/","\\/")+"(\\D|$)").test(t)) return false; }
         return true;
       });
