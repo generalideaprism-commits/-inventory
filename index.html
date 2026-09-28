@@ -152,12 +152,12 @@ const NEG = [
  {style:"GF7LKV519", name:"캡슬리브 하프넥 베스트", season:"26FW", colors:[
    {code:"BK", cname:"BLACK", short:-85, sizes:"M -35 · L -50"},
    {code:"BU", cname:"BURGUNDY", short:-145, sizes:"S -56 · M -46 · L -43"},
-   {code:"GR", cname:"GREY", short:-1484, sizes:"S -403 · M -838 · L -243"},
+   {code:"GR", cname:"GREY", short:-1480, sizes:"S -403 · M -834 · L -243"},
    {code:"NA", cname:"NAVY", short:-21, sizes:"L -21"}
  ]},
  {style:"GF3LKP506", name:"딥 브이넥 루즈핏 니트 풀오버", season:"26FW", colors:[
-   {code:"BK", cname:"BLACK", short:-87, sizes:"S -47 · M -16 · L -24"},
-   {code:"BU", cname:"BURGUNDY", short:-480, sizes:"S -286 · M -127 · L -67"},
+   {code:"BK", cname:"BLACK", short:-88, sizes:"S -47 · M -17 · L -24"},
+   {code:"BU", cname:"BURGUNDY", short:-479, sizes:"S -286 · M -126 · L -67"},
    {code:"MG", cname:"MELANGE GREY", short:-62, sizes:"S -33 · M -17 · L -12"}
  ]},
  {style:"GF1LJK506", name:"루즈핏 페이크 레더 하프 자켓", season:"26SS", colors:[
@@ -177,7 +177,7 @@ const NEG = [
    {code:"GR", cname:"GREY", short:-24, sizes:"S -16 · M -4 · L -4"}
  ]},
  {style:"WBD3L04501", name:"에센셜 크루넥 가디건", season:"24FW", colors:[
-   {code:"DN", cname:"DARK NAVY", short:-20, sizes:"M -20"}
+   {code:"DN", cname:"DARK NAVY", short:-18, sizes:"M -18"}
  ]},
  {style:"GF7LKC503", name:"GNRL 에센셜 가디건", season:"26FW", colors:[
    {code:"CH", cname:"CHARCOAL", short:-6, sizes:"XS -6"}
@@ -217,7 +217,7 @@ const NEG = [
  ]}
 ];
 
-const FWREORDER = [{"style": "GF3LKP506", "color": "MG", "am": "9,28 9/30 입고예정"}, {"style": "GF3LKP506", "color": "BK", "am": "9,28 9/30 입고예정"}, {"style": "GF3LKP506", "color": "BU", "am": "9,28 9/30 입고예정"}, {"style": "GF7LKV519", "color": "GR", "am": "입고완료"}, {"style": "GF7LKV519", "color": "BK", "am": "입고완료"}, {"style": "GF7LKV519", "color": "NA", "am": "입고완료"}, {"style": "GF7LKV519", "color": "BU", "am": "입고완료"}, {"style": "GF3LTS501", "color": "CH", "am": "10/2 입고예정"}, {"style": "GF3LTS501", "color": "WH", "am": "10/2 입고예정"}, {"style": "GF7LKV519", "color": "GR", "am": "9/30 입고예정"}, {"style": "GF7LKV519", "color": "BK", "am": "9/30 입고예정"}, {"style": "GF7LKV519", "color": "BU", "am": "9/30 입고예정"}, {"style": "GF3LKP506", "color": "MG", "am": "10/8 입고예정"}, {"style": "GF3LKP506", "color": "BK", "am": "10/8 입고예정"}, {"style": "GF3LKP506", "color": "BU", "am": "10/8 입고예정"}, {"style": "GF3LKC504", "color": "CH", "am": "10/29 입고예정"}];  /* 26FW 생산스케줄 리오더(ㄱㄱ 시 주입, Apps Script 피드 미포함분) */
+const FWREORDER = [{"style": "GF3LKP506", "color": "MG", "am": "9,28 9/30 입고예정"}, {"style": "GF3LKP506", "color": "BK", "am": "9,28 9/30 입고예정"}, {"style": "GF3LKP506", "color": "BU", "am": "9,28 9/30 입고예정"}, {"style": "GF7LKV519", "color": "GR", "am": "9/28 파샬, 잔량 9/30 입고예정"}, {"style": "GF7LKV519", "color": "BK", "am": "9/28 파샬, 잔량 9/30 입고예정"}, {"style": "GF7LKV519", "color": "NA", "am": "9/28 파샬, 잔량 9/30 입고예정"}, {"style": "GF7LKV519", "color": "BU", "am": "9/28 파샬, 잔량 9/30 입고예정"}, {"style": "GF3LTS501", "color": "CH", "am": "10/2 입고예정"}, {"style": "GF3LTS501", "color": "WH", "am": "10/2 입고예정"}, {"style": "GF7LKV519", "color": "GR", "am": "9/30 입고예정"}, {"style": "GF7LKV519", "color": "BK", "am": "9/30 입고예정"}, {"style": "GF7LKV519", "color": "BU", "am": "9/30 입고예정"}, {"style": "GF3LKP506", "color": "MG", "am": "10/8 입고예정"}, {"style": "GF3LKP506", "color": "BK", "am": "10/8 입고예정"}, {"style": "GF3LKP506", "color": "BU", "am": "10/8 입고예정"}, {"style": "GF3LKC504", "color": "CH", "am": "10/29 입고예정"}];  /* 26FW 생산스케줄 리오더(ㄱㄱ 시 주입, Apps Script 피드 미포함분) */
 
 let PROD={}, INC={}, INCSIZE={}, INCSIZED={}, meta={state:"loading"}, curFilter="pending", curSeason="all";
 function seasonGroup(s){ const v=s.season||""; return v==="26SS"?"26SS":v==="26FW"?"26FW":"이월"; }
