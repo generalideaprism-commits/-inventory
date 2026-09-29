@@ -251,10 +251,13 @@ function pickDate(sh){ return isDate(sh.actualIn)?sh.actualIn:isDate(sh.arrivePl
 function buildIncoming(shipments){
   INC={}; INCSIZE={}; INCSIZED={}; const today=new Date(); today.setHours(0,0,0,0);
   const cut=new Date(today.getFullYear(), today.getMonth(), 1);
+  const p2=n=>String(n).padStart(2,"0");
+  const todayStr=`${today.getFullYear()}-${p2(today.getMonth()+1)}-${p2(today.getDate())}`;
+  const cutStr=`${cut.getFullYear()}-${p2(cut.getMonth()+1)}-01`;
   (shipments||[]).forEach(sh=>{
     const d=pickDate(sh);
-    if(isDate(d) && new Date(d)<cut) return;                       // 지난달 이전 완료
-    if(isDate(sh.reflectDate) && new Date(sh.reflectDate)<=today) return; // 전산반영 완료
+    if(isDate(d) && d<cutStr) return;                       // 지난달 이전 완료 (문자열 비교=타임존 안전)
+    if(isDate(sh.reflectDate) && sh.reflectDate<=todayStr) return; // 전산반영 완료(당일 포함)
     const date=d, vendor=tabVendor(sh.tab), arrived=isDate(sh.actualIn);
     const agg={}; let lastStyle="", lastColor="";
     (sh.items||[]).forEach(it=>{
