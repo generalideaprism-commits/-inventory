@@ -157,10 +157,10 @@ const NEG = [
  ]},
  {style:"GF3LKP506", name:"딥 브이넥 루즈핏 니트 풀오버", season:"26FW", colors:[
    {code:"BK", cname:"BLACK", short:-67, sizes:"M -33 · L -34"},
-   {code:"BU", cname:"BURGUNDY", short:-119, sizes:"S -28 · M -88 · L -3"}
+   {code:"BU", cname:"BURGUNDY", short:-111, sizes:"S -24 · M -86 · L -1"}
  ]},
  {style:"GF3LKC504", name:"레이스 트리밍 슬리브리스 가디건 세트", season:"26FW", colors:[
-   {code:"CH", cname:"CHARCOAL", short:-73, sizes:"S -17 · M -28 · L -28"}
+   {code:"CH", cname:"CHARCOAL", short:-69, sizes:"S -16 · M -25 · L -28"}
  ]},
  {style:"WBD3L04503", name:"GNRL 에센셜 가디건", season:"24FW", colors:[
    {code:"GR", cname:"GREY", short:-4, sizes:"S -4"},
@@ -202,7 +202,7 @@ const NEG = [
  ]}
 ];
 
-const FWREORDER = [{"style": "GF3LKP506", "color": "MG", "am": "10/8 입고예정 262장"}, {"style": "GF3LKP506", "color": "BK", "am": "10/8 입고예정 246장"}, {"style": "GF3LKP506", "color": "BU", "am": "10/8 입고예정 464장"}, {"style": "GF7LKV519", "color": "NA", "am": "10/8 입고예정 43장"}, {"style": "GF7LKV519", "color": "BU", "am": "10/8 입고예정 35장"}, {"style": "GF3LTS501", "color": "CH", "am": "10/2 입고예정 150장"}, {"style": "GF3LTS501", "color": "WH", "am": "10/2 입고예정 150장"}, {"style": "GF7LKV519", "color": "GR", "am": "10/8 입고예정 176장"}, {"style": "GF7LKV519", "color": "BK", "am": "10/8 입고예정 79장"}, {"style": "GF3LKC504", "color": "CH", "am": "10/29 입고예정 650장"}];  /* 26FW 생산스케줄 리오더(ㄱㄱ 시 주입, Apps Script 피드 미포함분) */
+const FWREORDER = [{"style": "GF3LKP506", "color": "MG", "am": "추가 파샬 입고 262장 (10/8 예정)"}, {"style": "GF3LKP506", "color": "BK", "am": "추가 파샬 입고 246장 (10/8 예정)"}, {"style": "GF3LKP506", "color": "BU", "am": "추가 파샬 입고 464장 (10/8 예정)"}, {"style": "GF7LKV519", "color": "GR", "am": "추가 파샬 입고 176장 (10/8 예정)"}, {"style": "GF7LKV519", "color": "BK", "am": "추가 파샬 입고 79장 (10/8 예정)"}, {"style": "GF7LKV519", "color": "NA", "am": "추가 파샬 입고 43장 (10/8 예정)"}, {"style": "GF7LKV519", "color": "BU", "am": "추가 파샬 입고 35장 (10/8 예정)"}, {"style": "GF3LTS501", "color": "CH", "am": "10/2 입고예정 150장"}, {"style": "GF3LTS501", "color": "WH", "am": "10/2 입고예정 150장"}, {"style": "GF3LKC504", "color": "CH", "am": "10/29 입고예정 650장"}];  /* 26FW 생산스케줄 리오더(ㄱㄱ 시 주입, Apps Script 피드 미포함분) */
 
 let PROD={}, INC={}, INCSIZE={}, INCSIZED={}, meta={state:"loading"}, curFilter="pending", curSeason="all";
 function seasonGroup(s){ const v=s.season||""; return v==="26SS"?"26SS":v==="26FW"?"26FW":"이월"; }
