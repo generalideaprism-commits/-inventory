@@ -358,7 +358,7 @@ function render(filter){
       }).join("");
       // 출고장 날짜와 안 겹치는 리오더 입고예정 → 해당 컬러 하단 표기
       const sched=uncovered(c.code);
-      const schedHtml=sched.length?`<div class="sched">🔄 입고예정(생산): ${sched.join(" · ")}</div>`:"";
+      const schedHtml=sched.length?`<div class="sched">🔄 ${sched.join(" · ")}</div>`:"";
       return `<div class="cblock"><div class="cdot">${c.code} · ${c.cname}${vendors.length?` <span class="ven">🚚 ${vendors.join("/")}</span>`:""}</div>
         <table class="stbl"><thead><tr><th>사이즈</th><th>마이너스</th><th>입고</th><th class="stk">재고</th><th>입고일정</th></tr></thead>
         <tbody>${body}</tbody>
