@@ -150,14 +150,14 @@ const SHEET_URL = "https://script.google.com/macros/s/AKfycbzGRAhjdY7ba3iYykERsJ
 // 마이너스 재고 (스냅샷)
 const NEG = [
  {style:"GF3LKP506", name:"딥 브이넥 루즈핏 니트 풀오버", season:"26FW", colors:[
-   {code:"BK", cname:"BLACK", short:-56, sizes:"M -35 · L -21"},
+   {code:"BK", cname:"BLACK", short:-57, sizes:"M -35 · L -22"},
    {code:"BU", cname:"BURGUNDY", short:-141, sizes:"S -48 · M -67 · L -26"}
  ]},
  {style:"GF3LKC504", name:"레이스 트리밍 슬리브리스 가디건 세트", season:"26FW", colors:[
    {code:"CH", cname:"CHARCOAL", short:-148, sizes:"S -36 · M -59 · L -53"}
  ]},
  {style:"WBD3L04503", name:"GNRL 에센셜 가디건", season:"24FW", colors:[
-   {code:"BK", cname:"BLACK", short:-108, sizes:"S -108"}
+   {code:"BK", cname:"BLACK", short:-110, sizes:"S -110"}
  ]},
  {style:"GF7LKV519", name:"캡슬리브 하프넥 베스트", season:"26FW", colors:[
    {code:"BU", cname:"BURGUNDY", short:-17, sizes:"L -17"},
@@ -165,12 +165,12 @@ const NEG = [
  ]},
  {style:"GF3USS005", name:"하이넥 반집업 플리스 아노락", season:"26FW", colors:[
    {code:"BK", cname:"BLACK", short:-7, sizes:"S -3 · L -3 · XL -1"},
-   {code:"CH", cname:"CHARCOAL", short:-9, sizes:"S -3 · M -3 · L -2 · XL -1"},
+   {code:"CH", cname:"CHARCOAL", short:-10, sizes:"S -4 · M -3 · L -2 · XL -1"},
    {code:"IV", cname:"IVORY", short:-8, sizes:"S -2 · M -2 · L -3 · XL -1"},
    {code:"TG", cname:"TEAL GREEN", short:-4, sizes:"S -2 · L -1 · XL -1"}
  ]},
  {style:"GF7LKC507", name:"시그니처 크루넥 가디건", season:"26FW", colors:[
-   {code:"DR", cname:"DARK BROWN", short:-10, sizes:"S -2 · M -8"},
+   {code:"DR", cname:"DARK BROWN", short:-12, sizes:"S -3 · M -9"},
    {code:"OL", cname:"OLIVE", short:-10, sizes:"S -6 · M -4"}
  ]},
  {style:"WBD3L04501", name:"에센셜 크루넥 가디건", season:"24FW", colors:[
@@ -189,11 +189,15 @@ const NEG = [
    {code:"PL", cname:"PLUM", short:-7, sizes:"XL -7"}
  ]},
  {style:"GF3LJP525", name:"플리스 후드 집업", season:"26FW", colors:[
-   {code:"CH", cname:"CHARCOAL", short:-2, sizes:"S -1 · M -1"},
+   {code:"CH", cname:"CHARCOAL", short:-5, sizes:"S -2 · M -2 · L -1"},
    {code:"CR", cname:"CREAM", short:-1, sizes:"M -1"}
  ]},
  {style:"GF3UJK007", name:"폴딩밴드 배색 핑거홀 집업 플리스", season:"26FW", colors:[
-   {code:"RE", cname:"RED", short:-2, sizes:"S -1 · L -1"}
+   {code:"RE", cname:"RED", short:-4, sizes:"S -2 · L -2"}
+ ]},
+ {style:"GF7LKC503", name:"GNRL 에센셜 가디건", season:"26FW", colors:[
+   {code:"CH", cname:"CHARCOAL", short:-1, sizes:"XS -1"},
+   {code:"WH", cname:"WHITE", short:-1, sizes:"M -1"}
  ]},
  {style:"QBD1L95503", name:"에센셜 데일리 하이 삭스", season:"24SS", colors:[
    {code:"MT", cname:"multi", short:-2, sizes:"F -2"}
@@ -214,9 +218,6 @@ const NEG = [
  ]},
  {style:"GF2LBL514", name:"루즈핏 래글런 핀턱 블라우스", season:"26SS", colors:[
    {code:"BK", cname:"BLACK", short:-1, sizes:"S -1"}
- ]},
- {style:"GF7LKC503", name:"GNRL 에센셜 가디건", season:"26FW", colors:[
-   {code:"CH", cname:"CHARCOAL", short:-1, sizes:"XS -1"}
  ]},
  {style:"SBD1U02008", name:"브루클린 코지 맨투맨", season:"24SS", colors:[
    {code:"RE", cname:"RED", short:-1, sizes:"M -1"}
@@ -324,16 +325,24 @@ function applyLive(j, stale){
 }
 async function loadLive(){
   const btn=document.getElementById("refresh"); btn.disabled=true;
-  // 1) 캐시된 직전 데이터를 즉시 표시 (체감 속도 ↑)
   let shown=false;
+  // 1) localStorage 캐시 즉시 표시 (재방문 체감 ↑)
   try{ const c=localStorage.getItem("liveCache"); if(c){ applyLive(JSON.parse(c), true); shown=true; } }catch(e){}
-  if(!shown){ meta={state:"loading"}; renderLiveBar(); }
-  // 2) 백그라운드로 최신 불러와 갱신
+  // 2) 정적 스냅샷(live.json, ㄱㄱ 때 저장) — 같은 도메인이라 즉시 로드
   try{
-    const j=await (await fetch(SHEET_URL,{cache:"no-store"})).json();
+    const j=await (await fetch("live.json?t="+Date.now(),{cache:"no-store"})).json();
     try{ localStorage.setItem("liveCache", JSON.stringify(j)); }catch(e){}
-    applyLive(j, false);
-  }catch(e){ if(!shown){ meta={state:"err", err:String(e)}; renderLiveBar(); } }
+    applyLive(j, true); shown=true;   // stale=true → '최신 확인 중' 표시
+  }catch(e){}
+  if(!shown){ meta={state:"loading"}; renderLiveBar(); }
+  // 3) 실시간 Apps Script(~55s) — 백그라운드로 최신화 (페이지를 막지 않음)
+  (async()=>{
+    try{
+      const j=await (await fetch(SHEET_URL,{cache:"no-store"})).json();
+      try{ localStorage.setItem("liveCache", JSON.stringify(j)); }catch(e){}
+      applyLive(j, false);
+    }catch(e){ if(!shown){ meta={state:"err", err:String(e)}; renderLiveBar(); } }
+  })();
   btn.disabled=false;
 }
 function renderLiveBar(){
