@@ -150,16 +150,16 @@ const SHEET_URL = "https://script.google.com/macros/s/AKfycbzGRAhjdY7ba3iYykERsJ
 // 마이너스 재고 (스냅샷)
 const NEG = [
  {style:"GF7LKC503", name:"GNRL 에센셜 가디건", season:"26FW", colors:[
-   {code:"BK", cname:"BLACK", short:-2, sizes:"XL -2"},
-   {code:"CH", cname:"CHARCOAL", short:-158, sizes:"S -158"}
+   {code:"BK", cname:"BLACK", short:-1, sizes:"XL -1"},
+   {code:"CH", cname:"CHARCOAL", short:-156, sizes:"S -156"}
  ]},
  {style:"GF4LKC534", name:"하이넥 레글런 하찌 가디건", season:"26FW", colors:[
    {code:"BK", cname:"BLACK", short:-7, sizes:"M -7"},
    {code:"MI", cname:"MINT", short:-44, sizes:"S -22 · M -22"}
  ]},
  {style:"GF8LCT522", name:"리버시블 무스탕 더플 코트", season:"26FW", colors:[
-   {code:"BK", cname:"BLACK", short:-6, sizes:"L -6"},
-   {code:"CR", cname:"CREAM", short:-28, sizes:"S -13 · M -12 · L -3"},
+   {code:"BK", cname:"BLACK", short:-4, sizes:"L -4"},
+   {code:"CR", cname:"CREAM", short:-27, sizes:"S -12 · M -12 · L -3"},
    {code:"IV", cname:"IVORY", short:-1, sizes:"L -1"}
  ]},
  {style:"WBD4L05547", name:"리브드 터틀넥 풀오버", season:"24FW", colors:[
@@ -167,7 +167,7 @@ const NEG = [
    {code:"IV", cname:"IVORY", short:-28, sizes:"S -14 · M -6 · L -8"}
  ]},
  {style:"GF3LKP513", name:"부클 하이넥 니트 플리스 아노락", season:"26FW", colors:[
-   {code:"GR", cname:"GREY", short:-29, sizes:"M -9 · L -20"}
+   {code:"GR", cname:"GREY", short:-28, sizes:"M -9 · L -19"}
  ]},
  {style:"GF7LKC501", name:"에센셜 크루넥 가디건", season:"26FW", colors:[
    {code:"OA", cname:"OATMEAL", short:-14, sizes:"M -12 · L -2"},
@@ -175,12 +175,12 @@ const NEG = [
    {code:"WH", cname:"WHITE", short:-4, sizes:"L -4"}
  ]},
  {style:"WBD3L04501", name:"에센셜 크루넥 가디건", season:"24FW", colors:[
-   {code:"CH", cname:"CHARCOAL", short:-10, sizes:"S -10"},
+   {code:"CH", cname:"CHARCOAL", short:-12, sizes:"S -12"},
    {code:"DN", cname:"DARK(DEEP) NAVY", short:-2, sizes:"S -2"}
  ]},
  {style:"GF4UKC415", name:"[월레스와 그로밋 콜라보]그래픽 카라 니트 가디건", season:"26FW", colors:[
    {code:"KH", cname:"KHAKI", short:-5, sizes:"M -4 · XL -1"},
-   {code:"NA", cname:"NAVY", short:-4, sizes:"M -1 · XL -3"}
+   {code:"NA", cname:"NAVY", short:-5, sizes:"M -2 · XL -3"}
  ]},
  {style:"GF8LPT502", name:"기모 스트레치 스트레이트 데님 팬츠", season:"26FW", colors:[
    {code:"BK", cname:"BLACK", short:-8, sizes:"M -8"}
@@ -192,8 +192,15 @@ const NEG = [
  {style:"WBE1L04506", name:"스트랩 레이어드 가디건", season:"25SS", colors:[
    {code:"BK", cname:"BLACK", short:-4, sizes:"S -4"}
  ]},
+ {style:"WBE4L05534", name:"헤어리 스트라이프 루즈핏 풀오버", season:"25FW", colors:[
+   {code:"BR", cname:"BROWN", short:-1, sizes:"L -1"},
+   {code:"CH", cname:"CHARCOAL", short:-2, sizes:"S -2"}
+ ]},
  {style:"GF4LCT519", name:"리버시블 스웨이드 무스탕 코트", season:"26FW", colors:[
    {code:"CA", cname:"CAMEL", short:-2, sizes:"S -2"}
+ ]},
+ {style:"GF4LJP521", name:"도트 리버시블 플리스 자켓", season:"26FW", colors:[
+   {code:"BE", cname:"BEIGE", short:-2, sizes:"M -2"}
  ]},
  {style:"GF7LKP527", name:"뉴클래식 울 케이블 크루넥 풀오버", season:"26FW", colors:[
    {code:"GN", cname:"GREEN", short:-2, sizes:"M -2"}
@@ -206,10 +213,6 @@ const NEG = [
  ]},
  {style:"WBD3L04529", name:"뉴클래식 울 케이블 브이넥 가디건", season:"24FW", colors:[
    {code:"MG", cname:"MELANGE GREY", short:-2, sizes:"L -2"}
- ]},
- {style:"WBE4L05534", name:"헤어리 스트라이프 루즈핏 풀오버", season:"25FW", colors:[
-   {code:"BR", cname:"BROWN", short:-1, sizes:"L -1"},
-   {code:"CH", cname:"CHARCOAL", short:-1, sizes:"S -1"}
  ]},
  {style:"GF4UKC413", name:"[월레스와 그로밋 콜라보]노르딕 하이넥 가디건", season:"26FW", colors:[
    {code:"MU", cname:"MUSTARD", short:-1, sizes:"L -1"}
@@ -255,7 +258,7 @@ const NEG = [
  ]}
 ];
 
-const FWREORDER = [{"style": "GF3LKP506", "color": "MG", "am": "추가 파샬 입고 3장 (10/8 예정)"}, {"style": "GF3LKP506", "color": "BK", "am": "추가 파샬 입고 4장 (10/8 예정)"}, {"style": "GF3LKP506", "color": "BU", "am": "추가 파샬 입고 15장 (10/8 예정)"}, {"style": "GF7LKV519", "color": "GR", "am": "추가 파샬 입고 91장 (10/30 예정)"}, {"style": "GF7LKV519", "color": "BK", "am": "추가 파샬 입고 9장 (10/30 예정)"}, {"style": "GF7LKV519", "color": "BU", "am": "추가 파샬 입고 30장 (10/30 예정)"}, {"style": "GF7LKC503", "color": "BK", "am": "추가 파샬 입고 700장 (11/25 예정)"}, {"style": "GF7LKC503", "color": "CH", "am": "추가 파샬 입고 600장 (11/25 예정)"}, {"style": "GF7LKC503", "color": "GR", "am": "추가 파샬 입고 349장 (11/25 예정)"}, {"style": "GF7LKC503", "color": "WH", "am": "추가 파샬 입고 3장 (11/11 예정)"}, {"style": "GF7LKC511", "color": "BR", "am": "추가 파샬 입고 2장 (11/6 예정)"}, {"style": "GF7LPT501", "color": "BK", "am": "추가 파샬 입고 5장 (11/10 예정)"}, {"style": "GF7LPT501", "color": "LB", "am": "추가 파샬 입고 3장 (11/10 예정)"}, {"style": "GF7LKC501", "color": "WH", "am": "11/25 입고예정 100장"}, {"style": "GF7LKC501", "color": "OA", "am": "추가 파샬 입고 352장 (11/25 예정)"}, {"style": "GF7LKC501", "color": "PL", "am": "추가 파샬 입고 130장 (11/25 예정)"}, {"style": "GF3LPT501", "color": "BK", "am": "추가 파샬 입고 6장 (11/10 예정)"}, {"style": "GF3LPT501", "color": "DN", "am": "추가 파샬 입고 12장 (11/10 예정)"}, {"style": "GF3LKP513", "color": "PL", "am": "추가 파샬 입고 1장 (11/24 예정)"}, {"style": "GF3LKP513", "color": "OA", "am": "추가 파샬 입고 1장 (11/24 예정)"}, {"style": "GF3LOP515", "color": "BK", "am": "추가 파샬 입고 1장 (11/23 예정)"}, {"style": "GF7LKC503", "color": "DR", "am": "11/25 입고예정 200장"}, {"style": "GF7LKC501", "color": "CH", "am": "11/25 입고예정 350장"}, {"style": "GF8LCT522", "color": "DR", "am": "12/30 입고예정 2,500장"}, {"style": "GF8LCT522", "color": "BK", "am": "12/30 입고예정 800장"}, {"style": "GF8LCT522", "color": "CR", "am": "12/23 입고예정 700장"}, {"style": "GF4LKC534", "color": "BK", "am": "12/1 입고예정 130장"}, {"style": "GF4LKC534", "color": "MI", "am": "12/1 입고예정 320장"}];  /* 26FW 생산스케줄 리오더(ㄱㄱ 시 주입, Apps Script 피드 미포함분) */
+const FWREORDER = [{"style": "GF3LKP506", "color": "MG", "am": "추가 파샬 입고 3장 (10/8 예정)"}, {"style": "GF3LKP506", "color": "BK", "am": "추가 파샬 입고 4장 (10/8 예정)"}, {"style": "GF3LKP506", "color": "BU", "am": "추가 파샬 입고 15장 (10/8 예정)"}, {"style": "GF7LKV519", "color": "GR", "am": "추가 파샬 입고 91장 (10/30 예정)"}, {"style": "GF7LKV519", "color": "BK", "am": "추가 파샬 입고 9장 (10/30 예정)"}, {"style": "GF7LKV519", "color": "BU", "am": "추가 파샬 입고 30장 (10/30 예정)"}, {"style": "GF7LKC503", "color": "BK", "am": "추가 파샬 입고 700장 (11/26 예정)"}, {"style": "GF7LKC503", "color": "CH", "am": "추가 파샬 입고 600장 (11/26 예정)"}, {"style": "GF7LKC503", "color": "GR", "am": "추가 파샬 입고 349장 (11/26 예정)"}, {"style": "GF7LKC503", "color": "WH", "am": "추가 파샬 입고 3장 (11/11 예정)"}, {"style": "GF7LKC511", "color": "BR", "am": "추가 파샬 입고 2장 (11/6 예정)"}, {"style": "GF7LPT501", "color": "BK", "am": "추가 파샬 입고 5장 (11/10 예정)"}, {"style": "GF7LPT501", "color": "LB", "am": "추가 파샬 입고 3장 (11/10 예정)"}, {"style": "GF7LKC501", "color": "WH", "am": "11/26 입고예정 100장"}, {"style": "GF7LKC501", "color": "OA", "am": "추가 파샬 입고 352장 (11/26 예정)"}, {"style": "GF7LKC501", "color": "PL", "am": "추가 파샬 입고 130장 (11/26 예정)"}, {"style": "GF3LPT501", "color": "BK", "am": "추가 파샬 입고 6장 (11/10 예정)"}, {"style": "GF3LPT501", "color": "DN", "am": "추가 파샬 입고 12장 (11/10 예정)"}, {"style": "GF3LKP513", "color": "PL", "am": "추가 파샬 입고 1장 (11/24 예정)"}, {"style": "GF3LKP513", "color": "OA", "am": "추가 파샬 입고 1장 (11/24 예정)"}, {"style": "GF3LOP515", "color": "BK", "am": "추가 파샬 입고 1장 (11/17 예정)"}, {"style": "GF7LKC503", "color": "DR", "am": "11/26 입고예정 200장"}, {"style": "GF7LKC501", "color": "CH", "am": "11/26 입고예정 350장"}, {"style": "GF8LCT522", "color": "DR", "am": "12/30 입고예정 2,500장"}, {"style": "GF8LCT522", "color": "BK", "am": "12/30 입고예정 800장"}, {"style": "GF8LCT522", "color": "CR", "am": "12/23 입고예정 700장"}, {"style": "GF4LKC534", "color": "BK", "am": "12/1 입고예정 130장"}, {"style": "GF4LKC534", "color": "MI", "am": "12/1 입고예정 320장"}];  /* 26FW 생산스케줄 리오더(ㄱㄱ 시 주입, Apps Script 피드 미포함분) */
 
 let PROD={}, INC={}, INCSIZE={}, INCSIZED={}, meta={state:"loading"}, curFilter="pending", curSeason="all";
 function seasonGroup(s){ const v=s.season||""; return v==="26SS"?"26SS":v==="26FW"?"26FW":"이월"; }
